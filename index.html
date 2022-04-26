@@ -1,1 +1,20 @@
-<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="/charity/favicon.png"><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Shalimar&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"><title>charity</title><script defer="defer" src="/charity/js/chunk-vendors.bc1e8639.js"></script><script defer="defer" src="/charity/js/app.9c50da8b.js"></script><link href="/charity/css/app.d2831c71.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but charity doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="/favicon.ico"><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Shalimar&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"><title>charity</title><script defer="defer" src="/charity/js/chunk-vendors.bc1e8639.js"></script><script defer="defer" src="/charity/js/app.75862f15.js"></script><link href="/charity/css/app.e19c3ce3.css" rel="stylesheet"></head><style>.disable-hover,
+  .disable-hover * {
+    pointer-events: none !important;
+  }</style><body><noscript><strong>We're sorry but charity doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script>let body = document.body,
+      timer;
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        clearTimeout(timer);
+        if (!body.classList.contains('disable-hover')) {
+          body.classList.add('disable-hover');
+        }
+
+        timer = setTimeout(function () {
+          body.classList.remove('disable-hover');
+        }, 500);
+      },
+      false
+    );</script></body></html>
