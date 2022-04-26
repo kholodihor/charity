@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-        <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i> Home</router-link>
+    <router-link class="link" :to="{ name: 'Home' }"
+      ><i class="fa-solid fa-house"></i> Home</router-link
+    >
     <div class="form">
       <form action="">
         <h1>Donation Form</h1>
@@ -43,11 +45,15 @@ getDocs(colRef)
     console.log(err.message);
   });
 const addDonation = async () => {
-  await addDoc(colRef, {
-    name: name.value,
-    sum: sum.value,
-    goal: goal.value,
-  });
+  if (name.value && sum.value && goal.value) {
+    await addDoc(colRef, {
+      name: name.value,
+      sum: sum.value,
+      goal: goal.value,
+    });
+  } else {
+    alert('Please, fill the fields');
+  }
 };
 </script>
 
@@ -61,8 +67,10 @@ const addDonation = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  @media(max-width:550px){
+    padding: 2rem 1rem;
+  }
 
-  
   .link {
     position: absolute;
     top: 2rem;
@@ -81,7 +89,7 @@ const addDonation = async () => {
     align-items: center;
     flex-direction: column;
     padding: 1rem;
-    width: 40rem;
+    width: 60vw;
     border-radius: 1rem;
     h1 {
       padding: 1rem;
@@ -101,6 +109,9 @@ const addDonation = async () => {
       &:focus {
         border: 3px solid $teal;
       }
+        @media(max-width:550px){
+    width: 90%;
+  }
     }
     select {
       padding: 0.5rem 1rem;

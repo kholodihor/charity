@@ -11,14 +11,16 @@
         <div>
           <button @click.prevent="sumFifty">50</button>
           <button @click.prevent="sumHundred">100</button>
-                <select name="goal" id="" v-model="goal">
-          <option value="water">Water</option>
-          <option value="food">Food</option>
-          <option value="education">Education</option>
-        </select>
-       
-                   <button @click.prevent="addDonation()" class="submit">Make a donation</button>
-                 </div>
+          <select name="goal" id="" v-model="goal">
+            <option value="water">Water</option>
+            <option value="food">Food</option>
+            <option value="education">Education</option>
+          </select>
+
+          <button @click.prevent="addDonation()" class="submit">
+            Make a donation
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -45,26 +47,30 @@ getDocs(colRef)
     console.log(err.message);
   });
 const addDonation = async () => {
-  await addDoc(colRef, {
-    name: name.value,
-    sum: sum.value,
-    goal: goal.value,
-  }).then(() =>{
-    alert('Your donation is accepted')
-  })
+  if (name.value && sum.value && goal.value) {
+    await addDoc(colRef, {
+      name: name.value,
+      sum: sum.value,
+      goal: goal.value,
+    }).then(() => {
+      alert('Your donation is accepted');
+    });
+  } else {
+    alert('Please, fill the fields');
+  }
 };
 const sumFifty = () => {
-  return sum.value = '50'
-}
+  return (sum.value = '50');
+};
 const sumHundred = () => {
-  return sum.value = '100'
-}
+  return (sum.value = '100');
+};
 </script>
 
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
 .donation-box {
-    display: flex;
+  display: flex;
   justify-content: space-around;
   background: $blue;
   color: $white;
@@ -80,13 +86,6 @@ const sumHundred = () => {
     flex-direction: column;
 
     @media (max-width: 975px) {
-      text-align: center;
-    }
-    @media (max-width: 870px) {
-      text-align: center;
-    }
-    @media (max-width: 580px) {
-      width: 100%;
       text-align: center;
     }
 
@@ -117,8 +116,7 @@ const sumHundred = () => {
         text-align: center;
       }
       @media (max-width: 580px) {
-        width: 100%;
-        text-align: center;
+        width: 95%;
       }
 
       &.submit {
@@ -128,8 +126,7 @@ const sumHundred = () => {
           margin: 0 auto;
         }
         @media (max-width: 870px) {
-          margin: 0 auto;
-          width: 80%;
+          width: 100%;
         }
       }
       &:focus,
@@ -160,28 +157,28 @@ const sumHundred = () => {
         background: $white;
       }
     }
-      select {
+    select {
       padding: 0.5rem;
       margin: 2rem 0.5rem;
       width: 50%;
       background: transparent;
       color: $black;
-      border:1px solid $black;
+      border: 1px solid $black;
       outline: none;
       border-radius: 0.5rem;
       transition: all 0.2s ease-in-out;
-      option{
+      option {
         background-color: $white;
       }
 
-       @media (max-width: 975px) {
+      @media (max-width: 975px) {
         width: 95%;
       }
-      
+
       &:hover {
         background-color: $blue;
       }
-      }
+    }
   }
 }
 </style>
