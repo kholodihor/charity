@@ -88,7 +88,7 @@ const links = useRefsStore().links;
     }
   }
   .navbar {
-    width: 70%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,12 +118,14 @@ const links = useRefsStore().links;
       font-weight: 700;
       font-size: 1.7rem;
       letter-spacing: 0.2rem;
+      width: 100%;
+      overflow: hidden;
       @media screen and (max-width: 990px) {
-        margin: 1rem;
+        margin: 1rem auto;
         font-size: 1.5rem;
       }
       @media screen and (max-width: 700px) {
-        margin: 0.5rem;
+        margin: 0.7rem auto;
         font-size: 1rem;
       }
     }
@@ -174,11 +176,13 @@ const links = useRefsStore().links;
       color: $black;
       font-weight: 600;
       font-size: 1.2rem;
+      width: 50%;
+      margin: 0 auto;
       letter-spacing: 0.1rem;
       transition: all 0.3s ease;
       @media screen and (max-width: 990px) {
-        margin: 0.5rem;
         font-size: 0.8rem;
+         width: 70%;
       }
       &:hover {
         background: $yellow;
