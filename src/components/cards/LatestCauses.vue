@@ -9,8 +9,8 @@
         <div class="image">
           <img :src="require(`../../assets/img/${card.image}.webp`)" />
         </div>
-        <RangeSlider  :myValue="card.raised / card.goal"/>
-               <div class="card-content">
+        <RangeSlider :myValue="card.raised / card.goal" />
+        <div class="card-content">
           <span>{{ card.subtitle }}</span>
           <h3>{{ card.title }}</h3>
           <div class="card-footer">
@@ -105,6 +105,7 @@ const cards = useRefsStore().cards;
       .card-content {
         width: 100%;
         padding: 0.5rem;
+        margin-bottom: auto;
 
         span {
           color: $red;

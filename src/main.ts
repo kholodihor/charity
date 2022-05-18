@@ -10,17 +10,18 @@ createApp(App).use(createPinia()).use(router).mount('#app')
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyDHZVvkgK79385qlh3fw09nRaCrGMvILt8",
+  apiKey: "AIzaSyCxoB17EA0J6uJlQlvcLoAHqhX6p3_6noE",
 
-  authDomain: "weatherapp-f8ea8.firebaseapp.com",
+  authDomain: "charity-6b405.firebaseapp.com",
 
-  projectId: "weatherapp-f8ea8",
+  projectId: "charity-6b405",
 
-  storageBucket: "weatherapp-f8ea8.appspot.com",
+  storageBucket: "charity-6b405.appspot.com",
 
-  messagingSenderId: "476606896067",
+  messagingSenderId: "4765727680",
 
-  appId: "1:476606896067:web:f4a6df53a97a72d94e0f76"
+  appId: "1:4765727680:web:29687a33ca676f8638e625"
+
 
   
   };

@@ -37,6 +37,7 @@ const db = getFirestore();
 const colRef = collection(db, 'donations');
 getDocs(colRef)
   .then((snapshot) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let donations: any = [];
     snapshot.docs.forEach((doc) => {
       donations.push({ ...doc.data(), id: doc.id });

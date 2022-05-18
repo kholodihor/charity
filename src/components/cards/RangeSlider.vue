@@ -8,7 +8,7 @@
       max="1"
       step="0.1"
     />
-    <span class="range-value">{{ myValue.toFixed(2) * 100 }}%</span>
+    <span class="range-value">{{ +myValue.toFixed(2) * 100 }}%</span>
   </div>
 </template>
 <script setup lang="ts">
@@ -35,10 +35,33 @@ defineProps({
     left: 20%;
     transform: translate(-20%, -50%);
     width: 80%;
-    height: 5px;
+    height: 10px;
+    background: #ccc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     border-radius: 1rem;
     outline: none;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px $gray;
   }
+  .range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $white;
+    box-shadow: -407px 0 0 400px $blue;
+  }
+  .range-slider::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $white;
+    box-shadow: -407px 0 0 400px $blue;
+  }
+
   .range-value {
     position: absolute;
     background-color: #fff;

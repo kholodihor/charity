@@ -14,7 +14,7 @@ export const useRefsStore = defineStore({
       cards: [
         {
           title:
-            'Help bring clean and safe water to every person on the planet.The water crisis is massive. But together, we can solve it',
+            'Help bring clean and safe water to every person on the planet.The water crisis is massive.',
           subtitle: 'Water',
           goal: 45000,
           raised: 35000,
@@ -26,7 +26,7 @@ export const useRefsStore = defineStore({
             'Making real change happen by providing poverty alleviation through Education, we can solve it',
           subtitle: 'Education',
           goal: 45000,
-          raised: 38000,
+          raised: 41000,
           togo: 7000,
           image: 'card2',
         },
@@ -35,7 +35,7 @@ export const useRefsStore = defineStore({
             'Our role in the last decade was on health service improvement via the education of health workers.',
           subtitle: 'Medicine',
           goal: 45000,
-          raised: 24000,
+          raised: 27000,
           togo: 16000,
           image: 'card3',
         },
@@ -51,7 +51,7 @@ export const useRefsStore = defineStore({
         },
         {
           title:
-            'Making real change happen by providing poverty through Education',
+            'Making real change happen by providing poverty alleviation through Education',
           subtitle: 'Water',
           owner: 'by Admin',
           date: 'Jun 25, 2021',
