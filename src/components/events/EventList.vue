@@ -9,8 +9,9 @@
       <li v-for="item in eventList" :key="item.id">
         <Event
           @onRemove="removeEvent(item.id)"
-          @onDone="setDoneEvent(item.id)"
-          :model="item"
+          @onBook="setBookEvent(item.id)"
+          @onCancel="cancelBookEvent(item.id)"
+          :event="item"
         ></Event>
       </li>
     </ul>
@@ -64,9 +65,15 @@ export default defineComponent({
         },
       ];
     };
-    const setDoneEvent = (id: number) => {
+    const setBookEvent = (id: number) => {
       eventList.value = eventList.value.map((x) => {
         if (x.id === id) x.status = true;
+        return x;
+      });
+    };
+    const cancelBookEvent = (id: number) => {
+      eventList.value = eventList.value.map((x) => {
+        if (x.id === id) x.status = false;
         return x;
       });
     };
@@ -77,7 +84,8 @@ export default defineComponent({
       eventList,
       addEvent,
       removeEvent,
-      setDoneEvent,
+      setBookEvent,
+      cancelBookEvent
     };
   },
 });

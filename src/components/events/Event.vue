@@ -2,20 +2,23 @@
   <div class="container">
     <div class="card">
       <div class="date">
-        <span>{{ model.date }}</span>
+        <span>{{ event.date }}</span>
       </div>
       <div class="event">
         <span>Charity</span>
-        <h4>{{ model.title }}</h4>
+        <h4>{{ event.title }}</h4>
       </div>
       <div class="place">
-        <p>{{ model.place }}</p>
+        <p>{{ event.place }}</p>
       </div>
-      <div class="button">
-        <button class="book" @click="emitOnDone" v-if="!model.status">
+      <div class="buttons">
+        <button class="book" @click.prevent="emitOnBook" v-if="!event.status">
           Book Your Table
         </button>
-        <button class="remove" @click="emitOnRemove" v-else>Remove</button>
+        <button class="cancel" @click.prevent="emitOnCancel" v-else>
+          Cancel Booking
+        </button>
+        <button class="remove" @click.prevent="emitOnRemove">Remove</button>
       </div>
     </div>
   </div>
@@ -26,11 +29,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'AppEvent',
-  components: {},
-  emits: ['onDone', 'onRemove'],
+  emits: ['onBook', 'onRemove', 'onCancel'],
   props: {
-    model: {
-      requi$red: true,
+    event: {
       default: {
         id: 0,
         date: '2022-02-15',
@@ -44,13 +45,17 @@ export default defineComponent({
     const emitOnRemove = () => {
       emit('onRemove');
     };
-    const emitOnDone = () => {
-      emit('onDone');
+    const emitOnBook = () => {
+      emit('onBook');
+    };
+    const emitOnCancel = () => {
+      emit('onCancel');
     };
 
     return {
       emitOnRemove,
-      emitOnDone,
+      emitOnBook,
+      emitOnCancel,
     };
   },
 });
@@ -98,8 +103,11 @@ export default defineComponent({
       &.book {
         background: $teal;
       }
-      &.remove {
+      &.cancel {
         background: $coral;
+      }
+      &.remove {
+        background: $red;
       }
       &:hover {
         background: $yellow;
@@ -107,13 +115,18 @@ export default defineComponent({
     }
     .date,
     .event,
-    .place,
-    .button {
+    .place {
       width: 25%;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+    }
+    .buttons {
+      width: 25%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
       @media (max-width: 500px) {
         width: 100%;
