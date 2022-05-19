@@ -1,10 +1,10 @@
 <template>
   <div class="box">
-    <form action="">
-      <input v-model="date" type="date" />
-      <input v-model="title" type="text" placeholder="Name of the Event" />
-      <input v-model="place" type="text" placeholder="Place of the Event" />
-      <button @click.prevent="onAddEvent">Add Event</button>
+    <form action="#" >
+      <input v-model="date" type="date" data-test="new-event-date" />
+      <input v-model="title" type="text" placeholder="Name of the Event" data-test="new-event-title" />
+      <input v-model="place" type="text" placeholder="Place of the Event" data-test="new-event-place" />
+      <button type="submit" @click.prevent="onAddEvent" data-test="form">Add Event</button>
     </form>
   </div>
 </template>

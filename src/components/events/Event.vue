@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="card">
+    <div class="card" data-test="event">
       <div class="date">
         <span>{{ event.date }}</span>
       </div>
@@ -28,7 +28,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'AppEvent',
+  name: 'Event',
   emits: ['onBook', 'onRemove', 'onCancel'],
   props: {
     event: {

@@ -5,8 +5,8 @@
       <h1>Featured Events</h1>
     </div>
     <EventInput @onAddEvent="addEvent"></EventInput>
-    <ul class="task-list my-list">
-      <li v-for="item in eventList" :key="item.id">
+    <ul class="task-list my-list" >
+      <li v-for="item in eventList" :key="item.id" data-test="event-item" >
         <Event
           @onRemove="removeEvent(item.id)"
           @onBook="setBookEvent(item.id)"
