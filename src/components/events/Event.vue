@@ -12,13 +12,13 @@
         <p>{{ event.place }}</p>
       </div>
       <div class="buttons">
-        <button class="book" @click.prevent="emitOnBook" v-if="!event.status">
+        <button class="book" aria-label="Book Your Table"  @click.prevent="emitOnBook" v-if="!event.status">
           Book Your Table
         </button>
-        <button class="cancel" @click.prevent="emitOnCancel" v-else>
+        <button class="cancel" aria-label=" Cancel Booking"  @click.prevent="emitOnCancel" v-else>
           Cancel Booking
         </button>
-        <button class="remove" @click.prevent="emitOnRemove">Remove</button>
+        <button class="remove" aria-label="Remove Event" @click.prevent="emitOnRemove">Remove</button>
       </div>
     </div>
   </div>

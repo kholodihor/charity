@@ -1,10 +1,36 @@
 <template>
   <div class="box">
-    <form action="#" >
-      <input v-model="date" type="date" data-test="new-event-date" />
-      <input v-model="title" type="text" placeholder="Name of the Event" data-test="new-event-title" />
-      <input v-model="place" type="text" placeholder="Place of the Event" data-test="new-event-place" />
-      <button type="submit" @click.prevent="onAddEvent" data-test="form">Add Event</button>
+    <form action="#">
+      <label for="">
+        <span class="visually-hidden">Date</span>
+        <input v-model="date" type="date" data-test="new-event-date" />
+      </label>
+      <label for="">
+        <span class="visually-hidden">Date</span>
+        <input
+          v-model="title"
+          type="text"
+          placeholder="Name of the Event"
+          data-test="new-event-title"
+        />
+      </label>
+      <label for="">
+        <span class="visually-hidden">Date</span>
+        <input
+          v-model="place"
+          type="text"
+          placeholder="Place of the Event"
+          data-test="new-event-place"
+        />
+      </label>
+      <button
+        type="submit"
+        aria-label="Add Event"
+        @click.prevent="onAddEvent"
+        data-test="form"
+      >
+        Add Event
+      </button>
     </form>
   </div>
 </template>

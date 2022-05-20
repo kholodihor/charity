@@ -30,9 +30,19 @@
             <span>Newsletter</span>
             <h4>Get weekly Newsletter</h4>
           </div>
-          <form action="" method="POST">
-            <input type="text" placeholder="Enter full Name" />
-            <input type="text" placeholder="Enter your Email" />
+          <form action="" method="POST" @submit.prevent="onSubscribe">
+            <input
+              type="text"
+              placeholder="Enter full Name"
+              v-model.trim="state.name"
+              aria-label="Your Name"
+            />
+            <input
+              type="text"
+              placeholder="Enter your Email"
+              v-model.trim="state.email"
+              aria-label="Your Email"
+            />
             <button type="submit">Subscribe Now</button>
           </form>
         </div>
@@ -42,9 +52,51 @@
 </template>
 
 <script setup lang="ts">
+import { reactive, computed } from 'vue';
+import axios from 'axios';
 import { useRefsStore } from '../stores/refs.store';
+import useVuelidate from '@vuelidate/core';
+import { required, email } from '@vuelidate/validators';
 
 const news = useRefsStore().news;
+
+const state = reactive({
+  name: '',
+  email: '',
+});
+
+const rules = computed(() => {
+  return {
+    name: { required },
+    email: { required, email },
+  };
+});
+
+const v$ = useVuelidate(rules, state);
+
+
+const onSubscribe = () => {
+  v$.value.$validate();
+  if (!v$.value.$error) {
+    axios
+      .post(
+        `https://charity-6b405-default-rtdb.firebaseio.com/subscribe.json`,
+        {
+          name: state.name,
+          email: state.email,
+        }
+      )
+      .then(() => {
+        alert('You subscribed successfully');
+      });
+    setTimeout(() => {
+      state.name = '';
+      state.email = '';
+    }, 2000);
+  } else {
+    alert('Validation failed');
+  }
+};
 </script>
 
 <style scoped lang="scss">

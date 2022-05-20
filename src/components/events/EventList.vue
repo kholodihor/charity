@@ -4,7 +4,7 @@
       <span><i class="far fa-heart"></i>Events</span>
       <h1>Featured Events</h1>
     </div>
-    <EventInput @onAddEvent="addEvent"></EventInput>
+    <EventInput @onAddEvent="addEvent"/>
     <ul class="task-list my-list" >
       <li v-for="item in eventList" :key="item.id" data-test="event-item" >
         <Event
