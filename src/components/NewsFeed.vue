@@ -74,7 +74,6 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, state);
 
-
 const onSubscribe = () => {
   v$.value.$validate();
   if (!v$.value.$error) {

@@ -23,7 +23,7 @@
       <LatestCauses/>
       <JoinUs/>
       <ChooseUs/>
-      <EventList/>
+      <Event/>
       <NewsFeed/>
     </template>
     <template #footer>
@@ -36,17 +36,17 @@
 import { ref } from 'vue';
 import { useRefsStore } from '../stores/refs.store';
 import Page from '@/layouts/Page.vue';
-import Slider from '../components/slider/Slider.vue';
-import Slide from '../components/slider/Slide.vue';
-import Navbar from '../components/navigation/Navbar.vue';
+import Slider from '@/components/slider/Slider.vue';
+import Slide from '@/components/slider/Slide.vue';
+import Navbar from '@/components/navigation/Navbar.vue';
 import Donation from '@/components/Donation.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import LatestCauses from '@/components/cards/LatestCauses.vue';
-import JoinUs from '../components/JoinUs.vue';
-import ChooseUs from '../components/ChooseUs.vue';
-import EventList from '@/components/events/EventList.vue';
+import JoinUs from '@/components/JoinUs.vue';
+import ChooseUs from '@/components/ChooseUs.vue';
+import Event from '@/components/Event.vue'
 import NewsFeed from '@/components/NewsFeed.vue';
-import Footer from '../components/Footer.vue';
+import Footer from '@/components/Footer.vue';
 
 const slides = useRefsStore().slides;
 

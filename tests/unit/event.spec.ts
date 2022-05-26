@@ -1,57 +1,65 @@
-import { mount, shallowMount } from '@vue/test-utils';
-import Event from '@/components/events/Event.vue';
-import EventInput from '@/components/events/EventInput.vue';
-import EventList from '@/components/events/EventList.vue';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createPinia, setActivePinia } from 'pinia';
+import { mount, shallowMount, VueWrapper } from '@vue/test-utils';
+import Event from '@/components/Event.vue';
+import { useEventStore } from '@/stores/event.store';
 
+beforeAll(() => {
+  setActivePinia(createPinia());
+});
+
+describe('useEventStore', () => {
+  let store: ReturnType<typeof useEventStore>;
+
+  beforeEach(() => {
+    store = useEventStore();
+  });
+
+  afterEach(() => {
+    store.$reset();
+  });
+
+  test('creates a store', () => {
+    expect(store).toBeDefined();
+  });
+});
 
 describe('Event.vue', () => {
+  let wrapper: VueWrapper<any>;
+  beforeEach(() => {
+    wrapper = shallowMount(Event);
+  });
+
+  it('renders', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
   it('should render event text', () => {
-    const wrapperEvent = mount(Event);
-    const event = wrapperEvent.get('[data-test="event"]');
-    expect(event.text()).toContain('Year Renovation Programm 2021');
+    const wrapper = mount(Event);
+    const event = wrapper.get('[data-test="event"]');
     expect(event.text()).toContain('New York');
   });
-});
 
-describe('Event.vue', () => {
   it('button has correct text', () => {
-    const wrapperEvent = shallowMount(Event);
-    expect(wrapperEvent.find('.book').text()).toEqual('Book Your Table');
+    const wrapper = shallowMount(Event);
+    expect(wrapper.find('.book').text()).toEqual('Book Your Table');
   });
-});
-describe('Event.vue', () => {
-  it('button has correct text', () => {
-    const wrapperEvent = mount(Event)
 
-    expect(wrapperEvent.find('.book').text()).toEqual('Book Your Table');
-  });
-});
-
-describe('EventList.vue', () => {
-  it('renders h1 tag', () => {
-    const wrapperList = shallowMount(EventList);
-    expect(wrapperList.find('h1').text()).toEqual('Featured Events');
-  });
-});
-
-describe('EventList.vue', () => {
   it('should contain 2 elements', () => {
-    const wrapperList = mount(EventList);
-    expect(wrapperList.findAll('[data-test="event-item"]')).toHaveLength(2);
+    const wrapper = mount(Event);
+    expect(wrapper.findAll('[data-test="event"]')).toHaveLength(2);
   });
-});
 
-describe('EventInput.vue', () => {
   it('should add new event', async () => {
-    const wrapperInput = mount(EventInput);
+    const wrapper = mount(Event);
+    await wrapper.get('[data-test="new-event-date"]').setValue('20.05.2022');
+    await wrapper.get('[data-test="new-event-title"]').setValue('New Item');
+    await wrapper.get('[data-test="new-event-place"]').setValue('Kyiv');
+    await wrapper.get('[data-test="form"]').trigger('submit');
+  });
 
-    await wrapperInput
-      .get('[data-test="new-event-date"]')
-      .setValue('20.05.2022');
-    await wrapperInput
-      .get('[data-test="new-event-title"]')
-      .setValue('New Item');
-    await wrapperInput.get('[data-test="new-event-place"]').setValue('Kyiv');
-    await wrapperInput.get('[data-test="form"]').trigger('submit');
+  it('should contain 3 elements now', () => {
+    const wrapper = mount(Event);
+    expect(wrapper.findAll('[data-test="event"]')).toHaveLength(3);
   });
 });
