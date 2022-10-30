@@ -15,7 +15,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .player {
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   .player-sizer {
     position: relative;
     width: 80%;

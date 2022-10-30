@@ -40,6 +40,11 @@ li {
   clip-path: inset(50%);
   margin: -1px;
 }
+.container{
+  width: 90vw;
+  padding: 1rem;
+  margin: 0 auto;
+}
 
 @media (max-width: 850px) {
   html {

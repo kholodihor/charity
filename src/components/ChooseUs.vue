@@ -84,7 +84,7 @@ import Donation from './Donation.vue';
       flex: 1 1 40rem;
 
       .card {
-        width: 45%;
+        width: 50%;
         border: 1px solid $black;
         text-align: center;
         border-radius: 1rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i> Home</router-link>
+    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i></router-link>
     <h1>Charity News</h1>
     <section class="water" v-for="(article,index) in articles" :key="index">
       <div class="image-box">
@@ -47,8 +47,6 @@ const articles = useArticlesStore().articles;
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
 .container {
-  width: 100%;
-  padding: 2rem;
 
   .link {
     position: absolute;

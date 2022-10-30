@@ -136,6 +136,11 @@ const onSubscribe = () => {
       border-radius: 1rem;
       background: $white;
       overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+
 
       @media (max-width: 1024px) {
         width: 40%;

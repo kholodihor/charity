@@ -54,7 +54,7 @@ const addDonation = async () => {
       sum: sum.value,
       goal: goal.value,
     }).then(() => {
-      alert('Your donation is accepted');
+      alert('Thank you for Your Donation');
     });
   } else {
     alert('Please, fill the fields');
@@ -70,12 +70,14 @@ const sumHundred = () => {
 
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
+
 .donation-box {
   display: flex;
   justify-content: space-around;
   background: $blue;
   color: $white;
   padding: 2rem;
+
   @media (max-width: 580px) {
     flex-wrap: wrap;
   }
@@ -93,11 +95,13 @@ const sumHundred = () => {
     span {
       color: $teal;
     }
+
     h1 {
       font-size: 4rem;
       font-weight: 600;
     }
   }
+
   .donation-box-form {
     button {
       margin: 2rem 0.5rem;
@@ -116,6 +120,7 @@ const sumHundred = () => {
       @media (max-width: 870px) {
         text-align: center;
       }
+
       @media (max-width: 580px) {
         width: 95%;
       }
@@ -126,10 +131,12 @@ const sumHundred = () => {
         @media (max-width: 975px) {
           margin: 0 auto;
         }
+
         @media (max-width: 870px) {
           width: 100%;
         }
       }
+
       &:focus,
       &:hover {
         background: $teal;
@@ -139,6 +146,7 @@ const sumHundred = () => {
         color: $white;
       }
     }
+
     input {
       margin: 2rem 0.5rem;
       padding: 0.6rem 1.2rem;
@@ -158,6 +166,7 @@ const sumHundred = () => {
         background: $white;
       }
     }
+
     select {
       padding: 0.5rem;
       margin: 2rem 0.5rem;
@@ -168,6 +177,7 @@ const sumHundred = () => {
       outline: none;
       border-radius: 0.5rem;
       transition: all 0.2s ease-in-out;
+
       option {
         background-color: $white;
       }

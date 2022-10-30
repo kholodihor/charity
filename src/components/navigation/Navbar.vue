@@ -43,7 +43,7 @@ const links = useRefsStore().links;
   position: absolute;
   top: 0;
   right: 0;
-  width: 50%;
+  width: 40vw;
   height: 100%;
   background: $black;
   display: flex;
@@ -51,6 +51,12 @@ const links = useRefsStore().links;
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  @media screen and (max-width: 1050px) {
+   width: 50vw;
+  }
+  @media screen and (max-width: 650px) {
+   width: 100vw;
+  }
 
   .logo {
     display: flex;
@@ -124,10 +130,7 @@ const links = useRefsStore().links;
         margin: 1rem auto;
         font-size: 1.5rem;
       }
-      @media screen and (max-width: 700px) {
-        margin: 0.7rem auto;
-        font-size: 1rem;
-      }
+
     }
 
     a {

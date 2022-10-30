@@ -28,8 +28,6 @@
   </div>
 </template>
 
-<script></script>
-
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
 .join {

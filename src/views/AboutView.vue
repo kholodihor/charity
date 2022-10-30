@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i> Home</router-link>
+    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i></router-link>
     <h1>About Us</h1>
     <div class="image"><img src="../assets/img/about.webp" alt="" /></div>
   </div>
@@ -112,8 +112,9 @@ export default {
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
 .container {
-  width: 100%;
-  padding: 2rem;
+  width: 80vw;
+  padding: 1rem;
+  margin: 0 auto;
 
   .link {
     position: absolute;

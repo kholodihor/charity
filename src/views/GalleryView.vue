@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i> Home</router-link>
+    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i></router-link>
     <h1>Gallery</h1>
     <div class="images">
       <div class="img-box" v-for="(image, index) in images" :key="index">
@@ -37,15 +37,11 @@ const images = useRefsStore().images;
 <style scoped lang="scss">
 @import '../assets/styles/variables.scss';
 .container {
-  width: 100%;
-  padding: 2rem;
-  background: url(../assets/gallery/gallery-bg.webp) no-repeat;
-  background-size: cover;
 
   .link {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
+    top: 2.5rem;
+    left: 2.5rem;
     font-size: 1.5rem;
     font-weight: bold;
     color: $black;

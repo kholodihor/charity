@@ -6,28 +6,27 @@
         <Slider class="slider" v-slot="{ currentSlide }">
           <Slide v-for="(slide, index) in slides" :key="index">
             <div v-show="currentSlide === index + 1" class="slide-box">
-             <img :src="require(`../assets/img/${slide}.webp`)" />
+              <img :src="require(`../assets/img/${slide}.webp`)" />
             </div>
           </Slide>
         </Slider>
         <div id="nav-icon" @click="showMenu = !showMenu">
           <i v-if="!showMenu" class="fas fa-bars"></i>
           <i v-if="showMenu" class="fas fa-times"></i>
-          <h3>Menu</h3>
         </div>
       </div>
     </template>
     <template #main>
-      <Donation/>
-      <AboutUs/>
-      <LatestCauses/>
-      <JoinUs/>
-      <ChooseUs/>
-      <Event/>
-      <NewsFeed/>
+      <Donation />
+      <AboutUs />
+      <LatestCauses />
+      <JoinUs />
+      <ChooseUs />
+      <Event />
+      <NewsFeed />
     </template>
     <template #footer>
-      <Footer/>
+      <Footer />
     </template>
   </Page>
 </template>
@@ -62,10 +61,15 @@ const showMenu = ref(false);
   height: 100vh;
   z-index: 1000;
   transform: translateX(100%);
-  transition: all 0.7s ease;
+  transition: all 0.7s ease-in-out;
+
   &.show {
     transform: translateX(0);
   }
+}
+
+.slider-container {
+  position: relative;
 }
 
 .slider {
@@ -79,18 +83,18 @@ const showMenu = ref(false);
     height: 100vh;
     min-height: 100vh;
   }
+
   @media screen and (max-width: 1200px) {
     height: 80vh;
     min-height: 90vh;
   }
+
   @media (max-width: 990px) {
     height: 70vh;
     min-height: 70vh;
   }
-  @media (max-width: 700px) {
-    height: 55vh;
-    min-height: 55vh;
-  }
+
+
 
   .slide-box {
     position: absolute;
@@ -109,8 +113,9 @@ const showMenu = ref(false);
     }
   }
 }
+
 #nav-icon {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   left: 2rem;
   color: $white;
@@ -118,11 +123,11 @@ const showMenu = ref(false);
   display: flex;
   gap: 1rem;
   align-items: center;
-  h3 {
-    font-size: 1.8rem;
-  }
+  z-index: 9999;
+
   i {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    cursor: pointer;
   }
 }
 </style>

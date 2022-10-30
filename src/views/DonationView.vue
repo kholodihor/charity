@@ -11,7 +11,7 @@
         <label for="">Sum of Donation</label>
         <input type="text" v-model="sum" placeholder="Sum" />
         <label for="">The Goal of Your Donation</label>
-        <select name="goal" id="" v-model="goal">
+        <select name="goal" v-model="goal">
           <option value="water">Water</option>
           <option value="food">Food</option>
           <option value="education">Education</option>
