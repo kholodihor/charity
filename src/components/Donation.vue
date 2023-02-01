@@ -7,11 +7,12 @@
     <div class="donation-box-form">
       <form>
         <input type="text" placeholder="enter your name" v-model="name" />
-        <input type="text" placeholder="enter sum of donation" v-model="sum" />
+        <input type="text" placeholder="enter sum of donation" v-model="sum" data-test="sum" />
         <div>
-          <button @click.prevent="sumFifty">50</button>
-          <button @click.prevent="sumHundred">100</button>
+          <button @click.prevent="sumFifty" data-test="fifty">$50</button>
+          <button @click.prevent="sumHundred">$100</button>
           <select name="goal" id="" v-model="goal">
+            <option value="" disabled selected hidden>Please choose the goal for your donation</option>
             <option value="water">Water</option>
             <option value="food">Food</option>
             <option value="education">Education</option>
@@ -35,9 +36,9 @@ const goal = ref('');
 
 const db = getFirestore();
 const colRef = collection(db, 'donations');
+
 getDocs(colRef)
   .then((snapshot) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let donations: any = [];
     snapshot.docs.forEach((doc) => {
       donations.push({ ...doc.data(), id: doc.id });
@@ -47,6 +48,7 @@ getDocs(colRef)
   .catch((err) => {
     console.log(err.message);
   });
+
 const addDonation = async () => {
   if (name.value && sum.value && goal.value) {
     await addDoc(colRef, {
@@ -60,9 +62,11 @@ const addDonation = async () => {
     alert('Please, fill the fields');
   }
 };
+
 const sumFifty = () => {
   return (sum.value = '50');
 };
+
 const sumHundred = () => {
   return (sum.value = '100');
 };
@@ -114,7 +118,7 @@ const sumHundred = () => {
       opacity: 0.7;
       cursor: pointer;
       background: none;
-      border: 1px solid $black;
+      border: 1px solid $white;
       transition: all 0.3s ease;
 
       @media (max-width: 870px) {
@@ -126,7 +130,7 @@ const sumHundred = () => {
       }
 
       &.submit {
-        background: $coral;
+        background: $lightgreen;
 
         @media (max-width: 975px) {
           margin: 0 auto;
@@ -134,6 +138,11 @@ const sumHundred = () => {
 
         @media (max-width: 870px) {
           width: 100%;
+        }
+
+        &:focus,
+        &:hover {
+          background: $teal;
         }
       }
 
@@ -155,7 +164,8 @@ const sumHundred = () => {
       font-weight: 600;
       font-size: 1rem;
       background: none;
-      border: 1px solid #262626;
+      border: 1px solid #fff;
+      color: $white;
       transition: all 0.3s ease;
 
       @media (max-width: 975px) {
@@ -164,6 +174,7 @@ const sumHundred = () => {
 
       &:focus {
         background: $white;
+        color: black;
       }
     }
 
@@ -172,14 +183,14 @@ const sumHundred = () => {
       margin: 2rem 0.5rem;
       width: 50%;
       background: transparent;
-      color: $black;
-      border: 1px solid $black;
+      color: $white;
+      border: 1px solid $white;
       outline: none;
       border-radius: 0.5rem;
       transition: all 0.2s ease-in-out;
 
       option {
-        background-color: $white;
+        background-color: transparent;
       }
 
       @media (max-width: 975px) {

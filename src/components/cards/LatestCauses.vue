@@ -1,11 +1,11 @@
 <template>
   <div class="causes">
     <div class="causes-title">
-      <span><i class="far fa-heart"></i>Causes</span>
+      <span data-test="subtitle"><i class="far fa-heart"></i>Causes</span>
       <h1>Latest Causes</h1>
     </div>
     <div class="causes-cards">
-      <div class="card" v-for="(card, index) in cards" :key="index">
+      <div class="card" v-for="(card, index) in cards" :key="index" data-test="card">
         <div class="image">
           <img :src="require(`../../assets/img/${card.image}.webp`)" />
         </div>
@@ -15,7 +15,7 @@
           <h3>{{ card.title }}</h3>
           <div class="card-footer">
             <div class="footer-item">
-              <i class="fas fa-globe"></i>Goal <span>${{ card.goal }}</span>
+              <i class="fas fa-globe"></i>Goal <span data-test="goal">${{ card.goal }}</span>
             </div>
             <div class="footer-item">
               <i class="fas fa-users"></i>Raised <span>${{ card.raised }}</span>
@@ -40,6 +40,7 @@ const cards = useRefsStore().cards;
 
 <style scoped lang="scss">
 @import '../../assets/styles/variables.scss';
+
 .causes {
   width: 100%;
   background: url(../../assets/img/map.png) no-repeat;
@@ -55,15 +56,18 @@ const cards = useRefsStore().cards;
       color: $red;
       font-size: 2rem;
     }
+
     h1 {
       font-size: 4rem;
       color: $blue;
     }
   }
+
   .causes-cards {
     width: 100%;
     display: flex;
     margin-top: 4rem;
+
     @media (max-width: 750px) {
       flex-wrap: wrap;
     }
@@ -84,6 +88,7 @@ const cards = useRefsStore().cards;
       &:hover {
         box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.3);
       }
+
       .image {
         width: 100%;
         border-radius: 1rem;
@@ -98,10 +103,12 @@ const cards = useRefsStore().cards;
           overflow: hidden;
           transition: all 0.8s ease;
         }
+
         &:hover img {
           transform: scale(1.1);
         }
       }
+
       .card-content {
         width: 100%;
         padding: 0.5rem;
@@ -112,15 +119,18 @@ const cards = useRefsStore().cards;
           font-size: 2rem;
           font-family: 'Shalimar';
         }
+
         h3 {
           font-weight: 500;
           color: $blue;
         }
       }
+
       .card-footer {
         width: 100%;
         display: flex;
         margin: 2rem 0 1rem;
+
         .footer-item {
           width: 33%;
           display: flex;

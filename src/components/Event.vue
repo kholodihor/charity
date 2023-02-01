@@ -86,6 +86,10 @@ function updateEvent(id: string): void {
 .events {
   padding: 1rem;
 
+  @media (max-width: 550px) {
+    padding: 0;
+  }
+
   .title {
     text-align: center;
     padding: 1rem;
@@ -110,6 +114,7 @@ function updateEvent(id: string): void {
     @media (max-width: 550px) {
       display: flex;
       flex-wrap: wrap;
+      padding: 0.2rem;
     }
 
     input {
@@ -159,7 +164,6 @@ function updateEvent(id: string): void {
       justify-content: space-evenly;
       align-items: center;
       box-shadow: 0 0 5px #ccc;
-
       &.done {
         background-color: $lightgreen;
       }
@@ -240,7 +244,7 @@ function updateEvent(id: string): void {
         }
 
         @media (max-width: 700px) {
-          margin-right: 1rem;
+          margin-right: 0;
           padding: 0.5rem;
         }
       }

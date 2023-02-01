@@ -4,7 +4,7 @@
     <h1>The Perfect Help</h1>
     <div class="box">
       <div class="left">
-        <div class="card">
+        <div class="card" data-test="card">
           <div class="card-header">
             <div class="card-header-left">
               <span class="font-effect-shadow-multiple">01</span>
@@ -21,7 +21,7 @@
             </p>
           </div>
         </div>
-        <div class="card">
+        <div class="card" data-test="card">
           <div class="card-header">
             <div class="card-header-left">
               <span class="font-effect-shadow-multiple">02</span>
@@ -62,12 +62,14 @@ import Donation from './Donation.vue';
     color: $blue;
     font-size: 2.5rem;
   }
+
   span.subtitle {
     font-family: 'Shalimar';
     color: $red;
     font-size: 2rem;
     margin-left: 1rem;
   }
+
   .box {
     width: 100%;
     display: flex;
@@ -96,10 +98,12 @@ import Donation from './Donation.vue';
         &:hover {
           box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.3);
         }
+
         .card-header {
           display: flex;
           justify-content: space-between;
           font-size: 2.5rem;
+
           .card-header-left {
             padding: 1rem;
 
@@ -109,6 +113,7 @@ import Donation from './Donation.vue';
               padding: 1rem;
             }
           }
+
           .card-header-right {
             span {
               display: flex;
@@ -121,20 +126,25 @@ import Donation from './Donation.vue';
             }
           }
         }
+
         .card-main {
           padding: 1rem;
+
           h3 {
             padding: 1rem 0.5rem;
             color: $blue;
           }
+
           p {
             line-height: 1.7rem;
             color: $gray;
           }
         }
+
         &:nth-child(2) .card-header-left span {
           color: $coral;
         }
+
         &:nth-child(2) .card-header-right span {
           background: $coral;
         }
@@ -148,6 +158,7 @@ import Donation from './Donation.vue';
       align-items: center;
       text-align: center;
       flex: 1 1 40rem;
+
       .donation-box {
         position: relative;
         width: 100%;
@@ -163,7 +174,7 @@ import Donation from './Donation.vue';
         border-radius: 1rem;
         z-index: 555;
         overflow: hidden;
-        
+
         &:after {
           content: '';
           position: absolute;

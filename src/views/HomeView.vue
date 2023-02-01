@@ -116,9 +116,9 @@ const showMenu = ref(false);
 
 #nav-icon {
   position: fixed;
-  top: 1rem;
-  left: 2rem;
-  color: $white;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: $yellow;
   cursor: pointer;
   display: flex;
   gap: 1rem;
