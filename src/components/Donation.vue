@@ -17,7 +17,6 @@
             <option value="food">Food</option>
             <option value="education">Education</option>
           </select>
-
           <button @click.prevent="addDonation()" class="submit">
             Make a donation
           </button>
@@ -29,12 +28,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { db } from '@/firebase/firebaseInit'
 const name = ref('');
 const sum = ref('');
 const goal = ref('');
 
-const db = getFirestore();
 const colRef = collection(db, 'donations');
 
 getDocs(colRef)
@@ -43,7 +42,6 @@ getDocs(colRef)
     snapshot.docs.forEach((doc) => {
       donations.push({ ...doc.data(), id: doc.id });
     });
-    console.log(donations);
   })
   .catch((err) => {
     console.log(err.message);

@@ -10,7 +10,7 @@
             </div>
           </Slide>
         </Slider>
-        <div id="nav-icon" @click="showMenu = !showMenu">
+        <div v-show="showIcon" id="nav-icon" @click="showMenu = !showMenu">
           <i v-if="!showMenu" class="fas fa-bars"></i>
           <i v-if="showMenu" class="fas fa-times"></i>
         </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRefsStore } from '../stores/refs.store';
 import Page from '@/layouts/Page.vue';
 import Slider from '@/components/slider/Slider.vue';
@@ -50,6 +50,27 @@ import Footer from '@/components/Footer.vue';
 const slides = useRefsStore().slides;
 
 const showMenu = ref(false);
+const showIcon = ref(true);
+let lastScrollPosition = 0
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', hideIcon);
+    return () => {
+      window.removeEventListener('scroll', hideIcon);
+    }
+  }
+})
+const hideIcon = () => {
+  const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop
+  if (currentScrollPosition < 0) {
+    return
+  }
+  showIcon.value = currentScrollPosition < lastScrollPosition
+  lastScrollPosition = currentScrollPosition
+  console.log(currentScrollPosition)
+}
+
 </script>
 
 <style lang="scss">

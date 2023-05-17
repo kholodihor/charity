@@ -40,7 +40,6 @@ getDocs(colRef)
     snapshot.docs.forEach((doc) => {
       donations.push({ ...doc.data(), id: doc.id });
     });
-    console.log(donations);
   })
   .catch((err) => {
     console.log(err.message);

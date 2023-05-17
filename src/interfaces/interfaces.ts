@@ -35,3 +35,4 @@ export interface INews {
   image: string;
   date: string;
 }
+

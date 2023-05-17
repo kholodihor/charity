@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="copyright">
-      <p>Copyright &copy; byCold 2021</p>
+      <p>Copyright &copy; byCold{{ year }}</p>
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@
 const moveUp = () => {
   window.scrollTo(0, 0);
 };
+const year = new Date().getFullYear().toString();
 </script>
 
 <style scoped lang="scss">
