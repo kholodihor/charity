@@ -17,19 +17,14 @@
           and decent work for young people as well as peaceful and inclusive
           societies in which children and families can grow and develop.
         </p>
-        <a
-          href="https://www.savethechildren.org/us/ways-to-help/how-to-volunteer"
-          class="button"
-          target="_blank"
-          >Apply here <i class="fas fa-angle-double-right"></i
-        ></a>
+        <a href="https://www.savethechildren.org/us/ways-to-help/how-to-volunteer" class="button" target="_blank">Apply
+          here <i class="fas fa-angle-double-right"></i></a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .join {
   width: 100%;
   padding: 1rem;
@@ -60,30 +55,33 @@
         border-radius: 1rem;
         transition: all 0.5s ease;
       }
+
       &:hover img {
         transform: scale(1.1);
       }
     }
+
     .text {
       width: 100%;
       height: 100%;
       padding: 1rem;
 
       span {
-        font-family: 'Shalimar';
-        color: $red;
-        font-size: 2rem;
+        @include sectionLogo();
       }
+
       h1 {
         font-size: 2.5rem;
         color: $blue;
       }
+
       p {
         margin-top: 2rem;
         line-height: 1.5rem;
         color: #666;
         line-height: 2rem;
       }
+
       .button {
         width: 30%;
         padding: 0.7rem 1.5rem;
@@ -95,9 +93,11 @@
         justify-content: space-around;
         align-items: center;
         transition: all 0.3s ease;
+
         i {
           margin-left: 0.2rem;
         }
+
         &:hover {
           background: $coral;
         }
@@ -106,15 +106,16 @@
           width: 50%;
           padding: 0.7rem 1rem;
         }
+
         @media (max-width: 850px) {
           width: 40%;
           padding: 0.7rem 1rem;
         }
+
         @media (max-width: 350px) {
           width: 100%;
         }
       }
     }
   }
-}
-</style>
+}</style>

@@ -40,10 +40,8 @@
         </div>
         <div class="img">
           <img src="../assets/img/motivation-image.webp" alt="" />
-          <span
-            ><cite>Mironton T.</cite><br /><br />Life is a long lesson in
-            humanity</span
-          >
+          <span><cite>Mironton T.</cite><br /><br />Life is a long lesson in
+            humanity</span>
         </div>
       </div>
     </div>
@@ -53,7 +51,6 @@
 <script></script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .box {
   display: flex;
   flex-wrap: wrap;
@@ -88,6 +85,7 @@
         object-fit: cover;
         transition: all 0.5s ease;
       }
+
       i {
         position: absolute;
         top: 50%;
@@ -100,9 +98,11 @@
       &:nth-child(1) i {
         color: $teal;
       }
+
       &:nth-child(2) i {
         color: $yellow;
       }
+
       &:nth-child(2) i {
         color: $coral;
       }
@@ -115,10 +115,9 @@
     padding: 3rem;
 
     span {
-      font-family: 'Shalimar';
-      color: $red;
-      font-size: 2rem;
+      @include sectionLogo();
     }
+
     h1 {
       font-size: 4rem;
       font-weight: 600;
@@ -129,9 +128,11 @@
         font-size: 2rem;
       }
     }
+
     p {
       line-height: 1.7rem;
     }
+
     .motivation {
       width: 100%;
       display: flex;
@@ -139,23 +140,28 @@
       justify-content: space-between;
       padding: 1.5rem;
       margin-top: 3rem;
+
       li {
         padding: 0.5rem;
         margin: 0.5rem;
         font-weight: 700;
+
         @media (max-width: 750px) {
           font-size: 0.8rem;
         }
+
         i {
           color: $teal;
         }
       }
+
       .img {
         position: relative;
         width: 18rem;
         height: 12rem;
         overflow: hidden;
         border-radius: 1rem;
+
         @media (max-width: 750px) {
           margin-top: 2rem;
         }
@@ -163,6 +169,7 @@
         img {
           width: 100%;
         }
+
         &::after {
           content: '';
           position: absolute;
@@ -175,6 +182,7 @@
           border-radius: 1rem;
           z-index: 666;
         }
+
         span {
           position: absolute;
           top: 50%;
@@ -190,5 +198,4 @@
       }
     }
   }
-}
-</style>
+}</style>

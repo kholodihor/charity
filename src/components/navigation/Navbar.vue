@@ -38,7 +38,6 @@ const links = useRefsStore().links;
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/variables.scss';
 .menu {
   position: absolute;
   top: 0;

@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <router-link class="link" :to="{ name: 'Home' }"
-      ><i class="fa-solid fa-house"></i> Home</router-link
-    >
+    <router-link class="link" :to="{ name: 'Home' }"><i class="fa-solid fa-house"></i> Home</router-link>
     <div class="form">
       <form action="">
         <h1>Donation Form</h1>
@@ -25,17 +23,17 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
+import Swal from '@/utils/swal'
+import { db } from '@/firebase/firebaseInit';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 const name = ref('');
 const sum = ref('');
 const goal = ref('');
 
-const db = getFirestore();
 const colRef = collection(db, 'donations');
 getDocs(colRef)
   .then((snapshot) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let donations: any = [];
     snapshot.docs.forEach((doc) => {
       donations.push({ ...doc.data(), id: doc.id });
@@ -50,15 +48,26 @@ const addDonation = async () => {
       name: name.value,
       sum: sum.value,
       goal: goal.value,
+    }).then(() => {
+      Swal.fire(
+        {
+          title: 'Thank you for Your Donation',
+          icon: 'info',
+        }
+      )
     });
   } else {
-    alert('Please, fill the fields');
+    Swal.fire(
+      {
+        title: 'Please, fill the fields',
+        icon: 'warning',
+      }
+    )
   }
 };
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .container {
   padding: 3rem 2rem;
   min-height: 100vh;
@@ -67,7 +76,8 @@ const addDonation = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  @media(max-width:550px){
+
+  @media(max-width:550px) {
     padding: 2rem 1rem;
   }
 
@@ -82,6 +92,7 @@ const addDonation = async () => {
       color: $yellow;
     }
   }
+
   form {
     background: #ccc;
     display: flex;
@@ -91,6 +102,7 @@ const addDonation = async () => {
     padding: 1rem;
     width: 60vw;
     border-radius: 1rem;
+
     h1 {
       padding: 1rem;
       color: $black;
@@ -103,16 +115,20 @@ const addDonation = async () => {
       border-radius: 0.5rem;
       border: 3px solid transparent;
       transition: all 0.2s ease-in-out;
+
       &:nth-of-type(2) {
         width: 60%;
       }
+
       &:focus {
         border: 3px solid $teal;
       }
-        @media(max-width:550px){
-    width: 90%;
-  }
+
+      @media(max-width:550px) {
+        width: 90%;
+      }
     }
+
     select {
       padding: 0.5rem 1rem;
       margin: 1rem auto;
@@ -120,9 +136,11 @@ const addDonation = async () => {
       border: 2px solid transparent;
       border-radius: 0.5rem;
       transition: all 0.2s ease-in-out;
+
       &:focus {
         border: 2px solid $teal;
       }
+
       &:hover {
         background-color: #fff;
       }
@@ -131,6 +149,7 @@ const addDonation = async () => {
         background: #fff;
       }
     }
+
     button {
       padding: 0.7rem 2rem;
       margin: 1rem;
@@ -138,6 +157,7 @@ const addDonation = async () => {
       border-radius: 0.5rem;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+
       &:hover {
         background: $yellow;
       }

@@ -36,3 +36,10 @@ export interface INews {
   date: string;
 }
 
+export interface  IDonation  {
+  id: string;
+  name: string;
+  goal: string;
+  sum: string;
+}
+

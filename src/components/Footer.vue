@@ -70,7 +70,6 @@ const year = new Date().getFullYear().toString();
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .box {
   width: 100vw;
   position: relative;

@@ -45,7 +45,6 @@ const articles = useArticlesStore().articles;
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .container {
 
   .link {

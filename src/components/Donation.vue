@@ -6,15 +6,15 @@
     </div>
     <div class="donation-box-form">
       <form>
-        <input type="text" placeholder="enter your name" v-model="name" />
-        <input type="text" placeholder="enter sum of donation" v-model="sum" data-test="sum" />
+        <input type="text" placeholder="your name" v-model="name" />
+        <input type="text" placeholder="sum of donation" v-model="sum" data-test="sum" />
         <div>
           <button @click.prevent="sumFifty" data-test="fifty">$50</button>
           <button @click.prevent="sumHundred">$100</button>
           <select name="goal" id="" v-model="goal">
             <option value="" disabled selected hidden>Please choose the goal for your donation</option>
             <option value="water">Water</option>
-            <option value="food">Food</option>
+            <option value="medicine">Medicine</option>
             <option value="education">Education</option>
           </select>
           <button @click.prevent="addDonation()" class="submit">
@@ -27,25 +27,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router'
+import Swal from '@/utils/swal'
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/firebase/firebaseInit'
 const name = ref('');
 const sum = ref('');
 const goal = ref('');
-
 const colRef = collection(db, 'donations');
 
-getDocs(colRef)
-  .then((snapshot) => {
-    let donations: any = [];
-    snapshot.docs.forEach((doc) => {
-      donations.push({ ...doc.data(), id: doc.id });
-    });
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+const router = useRouter()
+
+onMounted(() => {
+  const user = localStorage.getItem('user')
+  if (user) {
+    name.value = user
+  }
+});
 
 const addDonation = async () => {
   if (name.value && sum.value && goal.value) {
@@ -54,10 +53,21 @@ const addDonation = async () => {
       sum: sum.value,
       goal: goal.value,
     }).then(() => {
-      alert('Thank you for Your Donation');
+      Swal.fire(
+        {
+          title: 'Thank you for Your Donation',
+          icon: 'info',
+        }
+      )
     });
+    router.push('/')
   } else {
-    alert('Please, fill the fields');
+    Swal.fire(
+      {
+        title: 'Please, fill the fields',
+        icon: 'warning',
+      }
+    )
   }
 };
 
@@ -71,8 +81,6 @@ const sumHundred = () => {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
-
 .donation-box {
   display: flex;
   justify-content: space-around;

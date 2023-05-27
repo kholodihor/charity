@@ -31,18 +31,8 @@
             <h4>Get weekly Newsletter</h4>
           </div>
           <form action="" method="POST" @submit.prevent="onSubscribe">
-            <input
-              type="text"
-              placeholder="Enter full Name"
-              v-model.trim="state.name"
-              aria-label="Your Name"
-            />
-            <input
-              type="text"
-              placeholder="Enter your Email"
-              v-model.trim="state.email"
-              aria-label="Your Email"
-            />
+            <input type="text" placeholder="Enter full Name" v-model.trim="state.name" aria-label="Your Name" />
+            <input type="text" placeholder="Enter your Email" v-model.trim="state.email" aria-label="Your Email" />
             <button type="submit">Subscribe Now</button>
           </form>
         </div>
@@ -99,23 +89,23 @@ const onSubscribe = () => {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/variables.scss';
 .container {
   width: 100%;
   padding: 2rem;
+
   .title {
     span {
-      font-family: 'Shalimar';
-      color: $red;
-      font-size: 2rem;
+      @include sectionLogo();
       padding: 0 1rem;
     }
+
     h1 {
       font-size: 4rem;
       color: $blue;
       padding: 0 1rem;
     }
   }
+
   .insights-cards {
     width: 100%;
     display: flex;
@@ -162,6 +152,7 @@ const onSubscribe = () => {
           linear-gradient(135deg, #fff 12px, transparent 0%);
         background-size: 1rem;
       }
+
       &:not(:last-of-type)::after {
         content: '';
         position: absolute;
@@ -173,6 +164,7 @@ const onSubscribe = () => {
           linear-gradient(45deg, #fff 12px, transparent 0%);
         background-size: 1rem;
       }
+
       .image {
         width: 100%;
         height: 50%;
@@ -183,6 +175,7 @@ const onSubscribe = () => {
         @media (max-width: 750px) {
           height: auto;
         }
+
         img {
           width: 100%;
           height: 100%;
@@ -191,26 +184,32 @@ const onSubscribe = () => {
           overflow: hidden;
           transition: all 0.5s ease;
         }
+
         &:hover img {
           transform: scale(1.1);
         }
       }
+
       .card-content {
         width: 100%;
         padding: 0.5rem;
+
         span {
           color: $teal;
           font-size: 1.5rem;
         }
+
         h3 {
           font-weight: 500;
           color: $blue;
         }
       }
+
       .card-footer {
         width: 100%;
         display: flex;
         margin: 0.5rem 0;
+
         .footer-item {
           width: 50%;
           display: flex;
@@ -220,6 +219,7 @@ const onSubscribe = () => {
           padding: 0.5rem;
           text-align: center;
           color: #666;
+
           span {
             font-family: 'Roboto';
             color: $coral;
@@ -228,20 +228,24 @@ const onSubscribe = () => {
           }
         }
       }
+
       &.form {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+
         .form-title {
           padding: 1rem;
           text-align: center;
+
           span {
             color: $red;
             font-family: 'Shalimar';
             font-size: 2rem;
           }
         }
+
         form {
           display: flex;
           justify-content: center;

@@ -52,7 +52,6 @@ import Donation from './Donation.vue';
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Poppins:wght@500&display=swap&effect=shadow-multiple');
-@import '../assets/styles/variables.scss';
 
 .container {
   padding: 2rem;
@@ -64,8 +63,7 @@ import Donation from './Donation.vue';
   }
 
   span.subtitle {
-    font-family: 'Shalimar';
-    color: $red;
+    @include sectionLogo();
     font-size: 2rem;
     margin-left: 1rem;
   }

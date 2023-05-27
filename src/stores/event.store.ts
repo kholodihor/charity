@@ -12,15 +12,15 @@ export const useEventStore = defineStore({
     events: [
       {
         id: uuid(),
-        date: '2022-02-15',
-        title: 'Year Renovation Program 2022',
+        date: '2024-02-15',
+        title: 'Year Renovation Program 2024',
         place: 'New York',
         booked: false,
       },
       {
         id: uuid(),
-        date: '2021-11-15',
-        title: 'Year Renovation Program 2021',
+        date: '2023-11-15',
+        title: 'Year Renovation Program 2023',
         place: 'New York',
         booked: false,
       },
@@ -47,4 +47,5 @@ export const useEventStore = defineStore({
       }
     },
   },
+  persist:true
 });

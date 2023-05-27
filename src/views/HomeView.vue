@@ -17,6 +17,7 @@
       </div>
     </template>
     <template #main>
+      <Header />
       <Donation />
       <AboutUs />
       <LatestCauses />
@@ -38,6 +39,7 @@ import Page from '@/layouts/Page.vue';
 import Slider from '@/components/slider/Slider.vue';
 import Slide from '@/components/slider/Slide.vue';
 import Navbar from '@/components/navigation/Navbar.vue';
+import Header from '@/components/navigation/Header.vue'
 import Donation from '@/components/Donation.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import LatestCauses from '@/components/cards/LatestCauses.vue';
@@ -68,14 +70,11 @@ const hideIcon = () => {
   }
   showIcon.value = currentScrollPosition < lastScrollPosition
   lastScrollPosition = currentScrollPosition
-  console.log(currentScrollPosition)
 }
 
 </script>
 
 <style lang="scss">
-@import '../assets/styles/variables.scss';
-
 .side-nav {
   position: absolute;
   top: 0;

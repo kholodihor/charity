@@ -16,7 +16,7 @@ export const useRefsStore = defineStore({
     links: [
       { name: 'Home', url: '#home', data: 'Home' },
       { name: 'Gallery', url: '#gallery', data: 'Gallery' },
-      { name: 'News', url: '#news', data: 'News' },
+      { name: 'About', url: '#about', data: 'About' },
     ],
     cards: [
       {

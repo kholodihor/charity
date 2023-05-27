@@ -8,7 +8,7 @@
       max="1"
       step="0.1"
     />
-    <span class="range-value">{{ +myValue.toFixed(2) * 100 }}%</span>
+    <span class="range-value">{{ (myValue*100).toFixed() }}%</span>
   </div>
 </template>
 <script setup lang="ts">
@@ -22,7 +22,7 @@ defineProps({
 });
 </script>
 <style scoped lang="scss">
-@import '../../assets/styles/variables.scss';
+
 .container {
   position: relative;
   height: 50px;

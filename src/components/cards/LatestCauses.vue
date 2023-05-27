@@ -5,42 +5,65 @@
       <h1>Latest Causes</h1>
     </div>
     <div class="causes-cards">
-      <div class="card" v-for="(card, index) in cards" :key="index" data-test="card">
-        <div class="image">
-          <img :src="require(`../../assets/img/${card.image}.webp`)" />
-        </div>
-        <RangeSlider :myValue="card.raised / card.goal" />
-        <div class="card-content">
-          <span>{{ card.subtitle }}</span>
-          <h3>{{ card.title }}</h3>
-          <div class="card-footer">
-            <div class="footer-item">
-              <i class="fas fa-globe"></i>Goal <span data-test="goal">${{ card.goal }}</span>
-            </div>
-            <div class="footer-item">
-              <i class="fas fa-users"></i>Raised <span>${{ card.raised }}</span>
-            </div>
-            <div class="footer-item">
-              <i class="fas fa-exclamation"></i>To go
-              <span>${{ card.togo }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Card :title="cards[0].title" :subtitle="cards[0].subtitle" :image="cards[0].image" :raised="waterRaised"
+        :goal="cards[0].goal" />
+      <Card :title="cards[1].title" :subtitle="cards[1].subtitle" :image="cards[1].image" :raised="educationRaised"
+        :goal="cards[1].goal" />
+      <Card :title="cards[2].title" :subtitle="cards[2].subtitle" :image="cards[2].image" :raised="medicineRaised"
+        :goal="cards[2].goal" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, } from 'vue';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase/firebaseInit'
 import { useRefsStore } from '../../stores/refs.store';
-import RangeSlider from './RangeSlider.vue';
+import { IDonation } from '@/interfaces/interfaces'
+import Card from './Card.vue';
 
+const waterRaised = ref(0);
+const educationRaised = ref(0);
+const medicineRaised = ref(0);
+const allDonations = ref<IDonation[]>([])
+const colRef = collection(db, 'donations');
 const cards = useRefsStore().cards;
+
+onMounted(async () => {
+  const querySnapshot = await getDocs(colRef)
+  let donations: IDonation[] = []
+  querySnapshot.forEach((doc: any) => {
+    const donation = {
+      id: doc.id,
+      sum: doc.data().sum,
+      name: doc.data().name,
+      goal: doc.data().goal
+    }
+    donations.push(donation)
+  })
+  allDonations.value = donations
+  getSum(waterRaised, 'water')
+  getSum(educationRaised, 'education')
+  getSum(medicineRaised, 'medicine')
+})
+
+const getSum = (reference: any, category: string) => {
+  let sums: number[] = []
+  allDonations.value.filter((card: IDonation) => {
+    return card.goal === category
+  }).forEach((card) => {
+    sums.push(Number(card.sum))
+  })
+  function sumArrayNumbers(arr: number[]) {
+    return arr.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0);
+  }
+  const result = sumArrayNumbers(sums);
+  reference.value = result;
+}
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/variables.scss';
-
 .causes {
   width: 100%;
   background: url(../../assets/img/map.png) no-repeat;
@@ -72,84 +95,6 @@ const cards = useRefsStore().cards;
       flex-wrap: wrap;
     }
 
-    .card {
-      width: 30%;
-      padding: 0.2rem;
-      margin: 1rem;
-      border: 1px solid $black;
-      margin-bottom: 2rem;
-      border-radius: 1rem;
-
-      @media (max-width: 750px) {
-        width: 100%;
-        transition: all 0.5s ease;
-      }
-
-      &:hover {
-        box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.3);
-      }
-
-      .image {
-        width: 100%;
-        border-radius: 1rem;
-        overflow: hidden;
-        transition: all 0.8s ease;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 1rem;
-          overflow: hidden;
-          transition: all 0.8s ease;
-        }
-
-        &:hover img {
-          transform: scale(1.1);
-        }
-      }
-
-      .card-content {
-        width: 100%;
-        padding: 0.5rem;
-        margin-bottom: auto;
-
-        span {
-          color: $red;
-          font-size: 2rem;
-          font-family: 'Shalimar';
-        }
-
-        h3 {
-          font-weight: 500;
-          color: $blue;
-        }
-      }
-
-      .card-footer {
-        width: 100%;
-        display: flex;
-        margin: 2rem 0 1rem;
-
-        .footer-item {
-          width: 33%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-          padding: 0.5rem;
-          text-align: center;
-          color: #666;
-
-          span {
-            font-family: 'Roboto';
-            color: $coral;
-            margin-top: 0.55rem;
-            font-size: 1.3rem;
-          }
-        }
-      }
-    }
   }
 }
 </style>

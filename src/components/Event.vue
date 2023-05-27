@@ -6,18 +6,9 @@
     </div>
     <div class="box">
       <form action="#" @submit.prevent="addEvent">
-        <label for="">
-          <span class="visually-hidden">Date</span>
-          <input v-model="eventDate" type="date" data-test="new-event-date" />
-        </label>
-        <label for="">
-          <span class="visually-hidden">Date</span>
-          <input v-model="eventTitle" type="text" placeholder="Name of the Event" data-test="new-event-title" />
-        </label>
-        <label for="">
-          <span class="visually-hidden">Date</span>
-          <input v-model="eventPlace" type="text" placeholder="Place of the Event" data-test="new-event-place" />
-        </label>
+        <input v-model="eventDate" type="date" data-test="new-event-date" />
+        <input v-model="eventTitle" type="text" placeholder="Name of the Event" data-test="new-event-title" />
+        <input v-model="eventPlace" type="text" placeholder="Place of the Event" data-test="new-event-place" />
         <button type="submit" class="add" aria-label="Add Event" data-test="form">
           Add Event
         </button>
@@ -81,8 +72,6 @@ function updateEvent(id: string): void {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/variables.scss';
-
 .events {
   padding: 1rem;
 
@@ -95,9 +84,7 @@ function updateEvent(id: string): void {
     padding: 1rem;
 
     span {
-      font-family: 'Shalimar';
-      color: $red;
-      font-size: 2rem;
+      @include sectionLogo();
     }
 
     h1 {
@@ -111,10 +98,13 @@ function updateEvent(id: string): void {
     padding: 2rem;
     margin-top: 2rem;
 
+
     @media (max-width: 550px) {
       display: flex;
+      justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
-      padding: 0.2rem;
+      padding: 0.5rem;
     }
 
     input {
@@ -125,7 +115,7 @@ function updateEvent(id: string): void {
       margin-left: 1rem;
 
       @media (max-width: 550px) {
-        width: 95%;
+        width: 100%;
         margin: 0.5rem auto;
         padding: 0.7rem;
       }
@@ -146,10 +136,21 @@ function updateEvent(id: string): void {
   }
 
   .container {
-    background: #fff;
     width: 80%;
     padding: 1rem;
     margin: 2rem auto;
+
+    @media (max-width: 1100px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 850px) {
+
+      grid-template-columns: 1fr;
+
+    }
 
     @media (max-width: 700px) {
       padding: 0.5rem;
@@ -158,14 +159,21 @@ function updateEvent(id: string): void {
 
     .card {
       width: 100%;
-      padding: 2rem 0;
+      padding: 2rem 0.5rem;
       margin: 1rem auto;
       display: flex;
       justify-content: space-evenly;
       align-items: center;
       box-shadow: 0 0 5px #ccc;
+
       &.done {
         background-color: $lightgreen;
+      }
+
+      @media (max-width: 1100px) {
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
       }
 
       @media (max-width: 700px) {
@@ -185,6 +193,11 @@ function updateEvent(id: string): void {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+
+        @media (max-width: 1100px) {
+          width: 100%;
+
+        }
       }
 
       .buttons {
@@ -195,15 +208,24 @@ function updateEvent(id: string): void {
         align-items: center;
         gap: 0.3rem;
 
+        @media (max-width: 1100px) {
+          width: 100%;
+          justify-content: center;
+        }
+
         @media (max-width: 500px) {
           width: 100%;
           margin: 0.5rem 0;
         }
 
         button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           padding: 1rem;
           cursor: pointer;
           border-radius: 1rem;
+          white-space: nowrap;
 
           @media (max-width: 990px) {
             padding: 0.7rem 1.5rem;
@@ -237,6 +259,10 @@ function updateEvent(id: string): void {
         background: $yellow;
         border-radius: 1rem;
         margin-right: 5rem;
+
+        @media (max-width: 1100px) {
+          margin-right: 0;
+        }
 
         @media (max-width: 990px) {
           margin-right: 1rem;
