@@ -110,8 +110,8 @@ const hideIcon = () => {
   }
 
   @media (max-width: 990px) {
-    height: 70vh;
-    min-height: 70vh;
+    height: 75vh;
+    min-height: 75vh;
   }
 
 

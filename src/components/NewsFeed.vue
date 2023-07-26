@@ -124,7 +124,7 @@ const onSubscribe = () => {
       padding: 1.5rem 0.3rem 0.3rem;
       margin: 1rem;
       border-radius: 1rem;
-      background: $white;
+      background: #f4ebd0;
       overflow: hidden;
       display: flex;
       justify-content: space-between;
