@@ -39,5 +39,11 @@ if (autoPlayEnabled.value) {
 onMounted(() => {
   getSlideCount.value = document.querySelectorAll('.slide').length;
 });
+
+// Expose refs and methods for testing and external access
+defineExpose({
+  currentSlide,
+  nextSlide
+});
 </script>
 

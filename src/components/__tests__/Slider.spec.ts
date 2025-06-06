@@ -1,6 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Slider from '../slider/Slider.vue'
+import type { Ref } from 'vue'
+
+// Define the type for the exposed properties
+interface SliderExposed {
+  currentSlide: Ref<number>
+  nextSlide: () => void
+}
 
 describe('Slider', () => {
   it('renders correctly', () => {
@@ -12,7 +19,7 @@ describe('Slider', () => {
   it('starts with currentSlide set to 1', () => {
     const wrapper = mount(Slider)
     // Access the exposed ref value
-    expect(wrapper.vm.currentSlide).toBe(1)
+    expect((wrapper.vm as unknown as SliderExposed).currentSlide.value).toBe(1)
   })
 
   it('sets up auto-play interval', () => {
