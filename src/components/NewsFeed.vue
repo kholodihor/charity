@@ -8,7 +8,7 @@
     <div class="insights-cards">
       <div class="card" v-for="(card, index) in news" :key="index">
         <div class="image">
-          <img :src="require(`../assets/img/${card.image}.webp`)" />
+          <img :src="`/img/${card.image}.webp`" />
         </div>
         <div class="card-content">
           <span>{{ card.subtitle }}</span>
@@ -31,8 +31,18 @@
             <h4>Get weekly Newsletter</h4>
           </div>
           <form action="" method="POST" @submit.prevent="onSubscribe">
-            <input type="text" placeholder="Enter full Name" v-model.trim="state.name" aria-label="Your Name" />
-            <input type="text" placeholder="Enter your Email" v-model.trim="state.email" aria-label="Your Email" />
+            <input
+              type="text"
+              placeholder="Enter full Name"
+              v-model.trim="state.name"
+              aria-label="Your Name"
+            />
+            <input
+              type="text"
+              placeholder="Enter your Email"
+              v-model.trim="state.email"
+              aria-label="Your Email"
+            />
             <button type="submit">Subscribe Now</button>
           </form>
         </div>
@@ -42,50 +52,47 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
-import axios from 'axios';
-import { useRefsStore } from '../stores/refs.store';
-import useVuelidate from '@vuelidate/core';
-import { required, email } from '@vuelidate/validators';
+import { reactive, computed } from 'vue'
+import axios from 'axios'
+import { useRefsStore } from '../stores/refs.store'
+import useVuelidate from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
-const news = useRefsStore().news;
+const news = useRefsStore().news
 
 const state = reactive({
   name: '',
   email: '',
-});
+})
 
 const rules = computed(() => {
   return {
     name: { required },
     email: { required, email },
-  };
-});
+  }
+})
 
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(rules, state)
 
 const onSubscribe = () => {
-  v$.value.$validate();
+  v$.value.$validate()
   if (!v$.value.$error) {
     axios
-      .post(
-        `https://charity-6b405-default-rtdb.firebaseio.com/subscribe.json`,
-        {
-          name: state.name,
-          email: state.email,
-        }
-      )
+      .post(`https://charity-6b405-default-rtdb.firebaseio.com/subscribe.json`, {
+        name: state.name,
+        email: state.email,
+      })
       .then(() => {
-        alert('You subscribed successfully');
-      });
+        alert('You subscribed successfully')
+      })
     setTimeout(() => {
-      state.name = '';
-      state.email = '';
-    }, 2000);
+      state.name = ''
+      state.email = ''
+    }, 2000)
   } else {
-    alert('Validation failed');
+    alert('Validation failed')
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -131,7 +138,6 @@ const onSubscribe = () => {
       flex-direction: column;
       align-items: center;
 
-
       @media (max-width: 1024px) {
         width: 40%;
         margin: 0.5rem auto;
@@ -148,7 +154,8 @@ const onSubscribe = () => {
         left: 0;
         width: 100%;
         height: 24px;
-        background: linear-gradient(-135deg, #fff 12px, transparent 0%),
+        background:
+          linear-gradient(-135deg, #fff 12px, transparent 0%),
           linear-gradient(135deg, #fff 12px, transparent 0%);
         background-size: 1rem;
       }
@@ -160,7 +167,8 @@ const onSubscribe = () => {
         left: 0;
         width: 100%;
         height: 24px;
-        background: linear-gradient(-45deg, #fff 12px, transparent 0%),
+        background:
+          linear-gradient(-45deg, #fff 12px, transparent 0%),
           linear-gradient(45deg, #fff 12px, transparent 0%);
         background-size: 1rem;
       }

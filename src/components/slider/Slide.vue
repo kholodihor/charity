@@ -7,15 +7,16 @@
 </template>
 
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'SlideItem',
+<script setup lang="ts">
+// Using script setup syntax for better TypeScript integration
+defineOptions({
+  name: 'SlideItem'
 });
 </script>
 
 <style scoped lang="scss">
+@use '@/styles/_shared' as *;
+
 .slide-enter-active,
 .slide-leave-active {
   transition: opacity 0.7s ease-in-out;

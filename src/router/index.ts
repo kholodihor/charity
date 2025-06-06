@@ -1,32 +1,27 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeView,
-  },
-  {
-    path: '/gallery',
-    name: 'Gallery',
-    component: () => import('../views/GalleryView.vue'),
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/AboutView.vue'),
-  },
-  {
-    path: '/donation',
-    name: 'Donation',
-    component: () => import('../views/DonationView.vue'),
-  },
-];
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '@/views/HomeView.vue'
+import NewsView from '@/views/NewsView.vue'
+import MapView from '@/views/MapView.vue'
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
-});
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: NewsView,
+    },
+    {
+      path: '/branches',
+      name: 'branches',
+      component: MapView,
+    },
+  ],
+})
 
-export default router;
+export default router

@@ -44,14 +44,14 @@
         </div>
         <div class="gallery">
           <div class="flex-row">
-            <img src="../assets/img/footer1.webp" alt="photo1" />
-            <img src="../assets/img/footer2.webp" alt="photo2" />
-            <img src="../assets/img/footer3.webp" alt="photo3" />
+            <img src="/img/footer1.webp" alt="photo1" />
+            <img src="/img/footer2.webp" alt="photo2" />
+            <img src="/img/footer3.webp" alt="photo3" />
           </div>
           <div class="flex-row">
-            <img src="../assets/img/footer4.webp" alt="photo4" />
-            <img src="../assets/img/footer5.webp" alt="photo5" />
-            <img src="../assets/img/footer6.webp" alt="photo6" />
+            <img src="/img/footer4.webp" alt="photo4" />
+            <img src="/img/footer5.webp" alt="photo5" />
+            <img src="/img/footer6.webp" alt="photo6" />
           </div>
         </div>
       </div>
@@ -63,6 +63,11 @@
 </template>
 
 <script setup lang="ts">
+// Define the component name to follow Vue's multi-word naming convention
+defineOptions({
+  name: 'SiteFooter'
+});
+
 const moveUp = () => {
   window.scrollTo(0, 0);
 };
@@ -70,6 +75,8 @@ const year = new Date().getFullYear().toString();
 </script>
 
 <style scoped lang="scss">
+@use '@/styles/_shared' as *;
+
 .box {
   width: 100vw;
   position: relative;

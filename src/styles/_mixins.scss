@@ -1,0 +1,8 @@
+// Mixins module
+@use 'variables' as *;
+
+@mixin sectionLogo() {
+  font-family: 'Shalimar';
+  color: $red;
+  font-size: 2rem;
+}

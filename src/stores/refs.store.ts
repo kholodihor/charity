@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
-import { ILinks, ICards, INews } from '@/interfaces/interfaces';
+import type { ILinks, ICards, INews } from '@/interfaces/interfaces';
 
-interface IRefs {
+// Define the store state interface
+export interface IRefs {
   slides: string[];
   links: ILinks[];
   cards: ICards[];
@@ -9,8 +10,8 @@ interface IRefs {
   images: string[];
 }
 
-export const useRefsStore = defineStore({
-  id: 'images',
+// Define the store with proper typing
+export const useRefsStore = defineStore('refs', {
   state: (): IRefs => ({
     slides: ['slide1', 'slide2', 'slide3', 'slide4', 'slide5', 'slide6'],
     links: [

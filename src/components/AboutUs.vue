@@ -3,15 +3,15 @@
     <div class="image-box">
       <div class="image-one">
         <div class="image">
-          <img src="../assets/img/water.webp" alt="" />
+          <img src="/img/water.webp" alt="" />
         </div>
       </div>
       <div class="inner-img-box">
         <div class="image">
-          <img src="../assets/img/medicine.webp" alt="" />
+          <img src="/img/medicine.webp" alt="" />
         </div>
         <div class="image">
-          <img src="../assets/img/school.webp" alt="" />
+          <img src="/img/school.webp" alt="" />
         </div>
       </div>
     </div>
@@ -20,13 +20,12 @@
         <span><i class="far fa-heart"></i>About Us</span>
         <h1>Fight for right cause for save the world</h1>
         <p>
-          From hunger to disaster relief, international charity organizations
-          exist to address the many causes that affect those around the world.
-          There are several types of international charities that are dedicated
-          to promoting peace, defending human rights, providing disaster relief
-          and more. Each of these organizations has a specific mission that it
-          is devoted to and strives to make a difference in the lives of those
-          who need assistance the most.
+          From hunger to disaster relief, international charity organizations exist to address the
+          many causes that affect those around the world. There are several types of international
+          charities that are dedicated to promoting peace, defending human rights, providing
+          disaster relief and more. Each of these organizations has a specific mission that it is
+          devoted to and strives to make a difference in the lives of those who need assistance the
+          most.
         </p>
       </div>
       <div class="motivation">
@@ -39,16 +38,15 @@
           </ul>
         </div>
         <div class="img">
-          <img src="../assets/img/motivation-image.webp" alt="" />
-          <span><cite>Mironton T.</cite><br /><br />Life is a long lesson in
-            humanity</span>
+          <img src="/img/motivation-image.webp" alt="" />
+          <span><cite>Mironton T.</cite><br /><br />Life is a long lesson in humanity</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script></script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .box {
@@ -198,4 +196,5 @@
       }
     }
   }
-}</style>
+}
+</style>

@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia';
-import { IArticle } from '@/interfaces/interfaces';
+import { type IArticle } from '@/interfaces/interfaces';
 
 interface ArticleState {
   articles: IArticle[];
 }
 
-export const useArticlesStore = defineStore({
-  id: 'articles',
+export const useArticlesStore = defineStore('articles', {
   state: (): ArticleState => ({
     articles: [
       {

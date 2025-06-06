@@ -7,6 +7,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+// Define component name for Vue devtools
+defineOptions({
+  name: 'SliderComponent'
+});
+
 const currentSlide = ref(1);
 const getSlideCount = ref(0);
 const autoPlayEnabled = ref(true);

@@ -2,23 +2,26 @@
   <div class="join">
     <div class="box">
       <div class="image">
-        <img src="../assets/img/join-photo.webp" alt="" />
+        <img src="/img/join-photo.webp" alt="" />
       </div>
       <div class="text">
         <span><i class="far fa-heart"></i>Join Us</span>
         <h1>Become a volunteer to save children</h1>
         <p>
-          For children in Africa to be able to thrive and develop their full
-          potential, it is crucial to step up and ensure that their rights are
-          fully met. Necessary actions include: protecting children from all
-          forms of violence; ending poverty; ensuring healthy lives for every
-          child; providing access to education and lifelong learning; empowering
-          girls and women and achieving gender equality; promoting employment
-          and decent work for young people as well as peaceful and inclusive
-          societies in which children and families can grow and develop.
+          For children in Africa to be able to thrive and develop their full potential, it is
+          crucial to step up and ensure that their rights are fully met. Necessary actions include:
+          protecting children from all forms of violence; ending poverty; ensuring healthy lives for
+          every child; providing access to education and lifelong learning; empowering girls and
+          women and achieving gender equality; promoting employment and decent work for young people
+          as well as peaceful and inclusive societies in which children and families can grow and
+          develop.
         </p>
-        <a href="https://www.savethechildren.org/us/ways-to-help/how-to-volunteer" class="button" target="_blank">Apply
-          here <i class="fas fa-angle-double-right"></i></a>
+        <a
+          href="https://www.savethechildren.org/us/ways-to-help/how-to-volunteer"
+          class="button"
+          target="_blank"
+          >Apply here <i class="fas fa-angle-double-right"></i
+        ></a>
       </div>
     </div>
   </div>
@@ -118,4 +121,5 @@
       }
     }
   }
-}</style>
+}
+</style>
