@@ -4,10 +4,10 @@
       <div class="logo-img">
         <img src="/img/heart-logo.png" alt="Charity Logo" />
       </div>
-      <div class="logo-text">
+      <!-- <div class="logo-text">
         <h4>D<span>o</span>nation</h4>
         <p>Charity Organisation</p>
-      </div>
+      </div> -->
     </div>
     <nav class="navbar">
       <ul>
@@ -23,7 +23,7 @@
         </li>
         <li>
           <router-link to="/branches" custom v-slot="{ href, navigate }">
-            <a :href="href" @click="navigate" data-text="Branches">Branches</a>
+            <a :href="href" @click="navigate" data-text="Our Branches">Our Branches</a>
           </router-link>
         </li>
         <li>
@@ -53,6 +53,7 @@ defineOptions({
   height: 100vh;
   display: flex;
   align-items: center;
+  padding-top: 10vh;
   justify-content: center;
   flex-direction: column;
   text-align: center;
@@ -111,6 +112,7 @@ defineOptions({
 
   .navbar {
     width: 100%;
+    height: 80%;
     display: flex;
     justify-content: center;
     align-items: center;

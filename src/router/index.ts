@@ -24,4 +24,21 @@ const router = createRouter({
   ],
 })
 
+// Navigation guard to reset body scroll styles when navigating between views
+router.beforeEach((to, from, next) => {
+  // Reset body styles to enable scrolling
+  document.body.style.position = ''
+  document.body.style.top = ''
+  document.body.style.width = ''
+  document.body.style.overflow = ''
+  
+  // If there was a saved scroll position, restore it
+  const savedPosition = parseInt(document.body.style.top || '0', 10) * -1
+  if (savedPosition) {
+    window.scrollTo(0, savedPosition)
+  }
+  
+  next()
+})
+
 export default router

@@ -1,6 +1,16 @@
 <template>
   <div class="map-container">
     <div id="map" ref="mapContainer"></div>
+    <router-link to="/" class="home-button">
+      <span class="home-icon">🏠</span> Home
+    </router-link>
+    <div class="map-legend">
+      <h3>Charity Types</h3>
+      <div class="legend-item" v-for="(color, type) in charityColors" :key="type">
+        <span class="color-dot" :style="{ backgroundColor: color }"></span>
+        <span class="type-label">{{ type.charAt(0).toUpperCase() + type.slice(1) }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,6 +25,15 @@ defineOptions({
 
 const mapContainer = ref<HTMLElement | null>(null)
 let map: maplibregl.Map | null = null
+
+// Define colors for different charity types
+const charityColors: Record<string, string> = {
+  water: '#3498db',
+  education: '#f1c40f',
+  food: '#2ecc71',
+  medical: '#e74c3c',
+  orphan: '#9b59b6',
+}
 
 // Charity locations across different continents
 const charityLocations = [
@@ -49,53 +68,28 @@ const charityLocations = [
 
 onMounted(() => {
   if (mapContainer.value) {
-    // Initialize the map
+    // Initialize the map with MapLibre demo style
     map = new maplibregl.Map({
       container: mapContainer.value,
-      style: {
-        version: 8,
-        sources: {
-          'raster-tiles': {
-            type: 'raster',
-            // Use English language map tiles
-            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png?language=en'],
-            tileSize: 256,
-            attribution: '© OpenStreetMap contributors',
-          },
-        },
-        layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 19,
-          },
-        ],
-        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
-        transition: { duration: 300, delay: 0 },
-      },
+      style: 'https://tiles.openfreemap.org/styles/liberty',
       center: [20, 15], // Center on Africa
-      zoom: 3,
+      zoom: 2,
     })
 
     // Add navigation controls
     if (map) {
-      map.addControl(new maplibregl.NavigationControl())
+      map.addControl(new maplibregl.NavigationControl({ showCompass: true, showZoom: true }))
+      // Add attribution control if not present in the style
+      if (!map.hasControl(new maplibregl.AttributionControl())) {
+        map.addControl(new maplibregl.AttributionControl({ compact: true }))
+      }
 
       // Add markers for charity locations when map is loaded
       map.on('load', () => {
         // Add markers for charity locations
         charityLocations.forEach((location) => {
-          // Define colors for different charity types
-          const colors: Record<string, string> = {
-            water: '#3498db',
-            education: '#f1c40f',
-            food: '#2ecc71',
-            medical: '#e74c3c',
-            orphan: '#9b59b6',
-          }
-          const color = colors[location.type] || '#3498db'
+          // Get color from charityColors object
+          const color = charityColors[location.type] || '#3498db'
 
           // Add marker to map using default MapLibre markers with custom color
           if (map) {
@@ -155,6 +149,7 @@ onUnmounted(() => {
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 :deep(.maplibregl-ctrl-attrib-inner) {
@@ -165,6 +160,70 @@ onUnmounted(() => {
 :deep(.maplibregl-ctrl-top-right) {
   margin-top: 1rem;
   margin-right: 1rem;
+}
+
+.map-legend {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 200px;
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .type-label {
+      font-size: 12px;
+    }
+  }
+}
+
+.home-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 8px 21px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 2;
+  
+  &:hover {
+    background-color: #34495e;
+    // transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .home-icon {
+    font-size: 16px;
+  }
 }
 
 // Custom marker styles

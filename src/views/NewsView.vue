@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <router-link class="link" :to="{ name: 'home' }"><i class="fa-solid fa-house"></i></router-link>
+    <router-link to="/" class="home-button">
+      <span class="home-icon">🏠</span> Home
+    </router-link>
     <h1>Charity News</h1>
     <section class="water" v-for="(article, index) in articles" :key="index">
       <div class="image-box">
@@ -40,15 +42,30 @@ const articles = useArticlesStore().articles
 
 <style scoped lang="scss">
 .container {
-  .link {
+  .home-button {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-
+    top: 10px;
+    left: 10px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    z-index: 2;
+    
     &:hover {
-      color: $yellow;
+      background-color: #34495e;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .home-icon {
+      font-size: 16px;
     }
   }
   h1 {
