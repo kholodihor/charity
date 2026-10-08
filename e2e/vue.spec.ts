@@ -30,7 +30,7 @@ test.describe('Charity Website', () => {
       const title = page.locator('h1').first();
       await expect(title).toBeVisible({ timeout: 1000 });
       console.log('Title element found and visible');
-    } catch (_) {
+    } catch {
       // It's acceptable if no h1 is found
       console.log('No h1 title found or not visible, this is acceptable');
     }
@@ -45,7 +45,7 @@ test.describe('Charity Website', () => {
       // Add an assertion to satisfy the 'test has no assertions' warning
       expect(true).toBe(true); // Simple assertion to confirm test executed
       console.log('Successfully clicked a button');
-    } catch (_) {
+    } catch {
       // It's acceptable if no button is found or clickable
       expect(true).toBe(true); // Simple assertion to confirm test executed
       console.log('No clickable button found, this is acceptable');
@@ -69,7 +69,7 @@ test.describe('Charity Website', () => {
       const footerElement = page.locator('footer, .footer, .box, .about').first();
       await expect(footerElement).toBeVisible({ timeout: 1000 });
       console.log('Footer element found');
-    } catch (_) {
+    } catch {
       // If no footer is found, check for content at the bottom
       console.log('No specific footer element found, checking for bottom content');
       const bodyContent = await page.textContent('body');

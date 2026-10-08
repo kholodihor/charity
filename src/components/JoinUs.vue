@@ -20,6 +20,7 @@
           href="https://www.savethechildren.org/us/ways-to-help/how-to-volunteer"
           class="button"
           target="_blank"
+          rel="noopener noreferrer"
           >Apply here <i class="fas fa-angle-double-right"></i
         ></a>
       </div>

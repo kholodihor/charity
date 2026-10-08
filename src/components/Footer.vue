@@ -36,10 +36,10 @@
           <h2>Follow us</h2>
           <p>Let us be Social</p>
           <div class="social">
-            <a href=""> <i class="fab fa-facebook-f"></i></a>
-            <a href=""> <i class="fab fa-twitter"></i></a>
-            <a href=""> <i class="fab fa-instagram"></i></a>
-            <a href=""> <i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Social link"> <i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Social link"> <i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Social link"> <i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Social link"> <i class="fab fa-youtube"></i></a>
           </div>
         </div>
         <div class="gallery">
@@ -69,7 +69,7 @@ defineOptions({
 });
 
 const moveUp = () => {
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 const year = new Date().getFullYear().toString();
 </script>

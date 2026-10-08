@@ -1,12 +1,21 @@
 <template>
   <div class="container">
-    <input :value="myValue" type="range" class="range-slider" min="0" max="1" step="0.1" />
-    <span class="range-value">{{ (myValue * 100).toFixed() }}%</span>
+    <!-- Display-only progress bar styled as a range input -->
+    <input
+      :value="Math.min(myValue, 1)"
+      type="range"
+      class="range-slider"
+      min="0"
+      max="1"
+      step="0.01"
+      disabled
+      tabindex="-1"
+      aria-hidden="true"
+    />
+    <span class="range-value">{{ Math.round(myValue * 100) }}%</span>
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 defineProps({
   myValue: {
     type: Number,
@@ -35,6 +44,7 @@ defineProps({
     outline: none;
     overflow: hidden;
     box-shadow: inset 0 0 5px $gray;
+    pointer-events: none;
   }
   .range-slider::-webkit-slider-thumb {
     -webkit-appearance: none;

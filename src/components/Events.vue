@@ -108,108 +108,79 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useEventStore } from '@/stores/events.store'
 import { auth } from '@/firebase/firebaseInit'
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
+import { signInWithGoogle as googleSignIn } from '@/firebase/auth'
 import swal from '@/utils/swal'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
+// Client-side check only hides the button; deleting must also be restricted in Firestore rules.
+const ADMIN_EMAIL = 'admin@example.com'
+
 const eventStore = useEventStore()
 
 const eventDate = ref('')
 const eventTitle = ref('')
 const eventPlace = ref('')
 const isAuthenticated = ref(false)
-const isAdmin = ref(false)
+const canRemoveEvents = ref(false)
 
-// Check authentication status and admin role
-onAuthStateChanged(auth, async (user) => {
+const unsubscribe = onAuthStateChanged(auth, (user) => {
   isAuthenticated.value = !!user
-  
-  // Check if user is admin (you can implement your own admin check logic)
-  // For example, check if user email is in admin list or has admin claim
-  if (user) {
-    // Example: Check if user email is admin
-    isAdmin.value = user.email === 'admin@example.com' // Replace with your admin check
-  } else {
-    isAdmin.value = false
-  }
+  canRemoveEvents.value = user?.email === ADMIN_EMAIL
 })
+onUnmounted(unsubscribe)
 
-// Google Sign In function - same as in Header.vue
 const signInWithGoogle = () => {
-  const provider = new GoogleAuthProvider()
-  signInWithPopup(auth, provider)
-    .then((res) => {
-      console.log(res.user)
-      localStorage.setItem('user', res.user.displayName as string)
-      // Refresh the page to update authentication state
-      router.go(0)
-    })
-    .catch((err) => {
-      console.log(err)
-      swal.fire({
+  googleSignIn().catch((err) => {
+    console.error('Google sign-in failed:', err)
+    swal
+      .fire({
         title: 'Authentication Failed',
         text: 'Failed to sign in with Google. Please try again.',
         icon: 'error',
         confirmButtonText: 'Try Again',
-        confirmButtonColor: '#f7941d',
-        customClass: {
-          confirmButton: 'btn btn-primary px-4 py-2'
-        },
-        buttonsStyling: true,
-        background: '#fff',
-        backdrop: `
-          rgba(0,0,0,0.4)
-          center
-          no-repeat
-        `,
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown animate__faster'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp animate__faster'
-        }
-      }).then((result) => {
+        showCancelButton: true,
+      })
+      .then((result) => {
         if (result.isConfirmed) {
-          // Try signing in again if the user clicks 'Try Again'
-          signInWithGoogle();
+          signInWithGoogle()
         }
       })
-    })
+  })
 }
 
-// Computed property to check if user can remove events
-const canRemoveEvents = computed(() => isAdmin.value)
-
-// Fetch events when component is mounted
 onMounted(() => {
   eventStore.fetchEvents()
 })
 
 async function addEvent(): Promise<void> {
   if (!eventDate.value || !eventTitle.value || !eventPlace.value) return
-  
+
   if (!isAuthenticated.value) {
     showAuthRequiredPopup('add an event')
     return
   }
-  
+
   await eventStore.addEvent(eventTitle.value, eventDate.value, eventPlace.value)
-  eventTitle.value = ''
-  eventPlace.value = ''
-  eventDate.value = ''
+  if (!eventStore.error) {
+    eventTitle.value = ''
+    eventPlace.value = ''
+    eventDate.value = ''
+  }
 }
 
 async function deleteEvent(id: string): Promise<void> {
-  if (!isAdmin.value) {
-    showAdminRequiredPopup()
+  if (!canRemoveEvents.value) {
+    swal.fire({
+      title: 'Admin Access Required',
+      text: 'Only administrators can perform this action.',
+      icon: 'warning',
+    })
     return
   }
-  
-  // Confirm deletion
+
   const result = await swal.fire({
     title: 'Are you sure?',
     text: 'This event will be permanently deleted!',
@@ -218,12 +189,13 @@ async function deleteEvent(id: string): Promise<void> {
     confirmButtonText: 'Yes, delete it!',
     cancelButtonText: 'Cancel',
     confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
   })
-  
+
   if (result.isConfirmed) {
     await eventStore.deleteEvent(id)
-    swal.fire('Deleted!', 'The event has been deleted.', 'success')
+    if (!eventStore.error) {
+      swal.fire('Deleted!', 'The event has been deleted.', 'success')
+    }
   }
 }
 
@@ -232,65 +204,25 @@ async function updateEvent(id: string): Promise<void> {
     showAuthRequiredPopup('book an event')
     return
   }
-  
+
   await eventStore.updateEvent(id)
 }
 
-// Show authentication required popup
 function showAuthRequiredPopup(action: string): void {
-  swal.fire({
-    title: 'Authentication Required',
-    text: `You need to be logged in to ${action}.`,
-    icon: 'info',
-    confirmButtonText: 'Sign In with Google',
-    showCancelButton: true,
-    cancelButtonText: 'Cancel',
-    customClass: {
-      confirmButton: 'btn btn-primary px-4 py-2 mx-2',
-      cancelButton: 'btn btn-outline-secondary px-4 py-2 mx-2'
-    },
-    buttonsStyling: true,
-    confirmButtonColor: '#f7941d', // Primary orange color matching charity theme
-    cancelButtonColor: '#6c757d',
-    background: '#fff',
-    backdrop: `
-      rgba(0,0,0,0.4)
-      center
-      no-repeat
-    `,
-    showClass: {
-      popup: 'animate__animated animate__fadeInDown animate__faster'
-    },
-    hideClass: {
-      popup: 'animate__animated animate__fadeOutUp animate__faster'
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Use the same Google sign-in function as in Header.vue
-      signInWithGoogle();
-    }
-  })
-}
-
-// Show admin required popup
-function showAdminRequiredPopup(): void {
-  swal.fire({
-    title: 'Admin Access Required',
-    text: 'Only administrators can perform this action.',
-    icon: 'warning',
-    confirmButtonText: 'OK',
-    customClass: {
-      confirmButton: 'btn btn-primary px-4 py-2'
-    },
-    buttonsStyling: true,
-    confirmButtonColor: '#f7941d',
-    background: '#fff',
-    backdrop: `
-      rgba(0,0,0,0.4)
-      center
-      no-repeat
-    `
-  })
+  swal
+    .fire({
+      title: 'Authentication Required',
+      text: `You need to be logged in to ${action}.`,
+      icon: 'info',
+      confirmButtonText: 'Sign In with Google',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        signInWithGoogle()
+      }
+    })
 }
 </script>
 

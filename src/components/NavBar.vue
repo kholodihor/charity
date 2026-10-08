@@ -27,7 +27,7 @@
           </router-link>
         </li>
         <li>
-          <a href="#donate" class="btn">Make a Donation</a>
+          <a href="#donation" class="btn" @click.prevent="emit('donate')">Make a Donation</a>
         </li>
         <li>
           <div class="social">
@@ -45,6 +45,8 @@
 defineOptions({
   name: 'NavBar',
 })
+
+const emit = defineEmits<{ donate: [] }>()
 </script>
 
 <style scoped lang="scss">

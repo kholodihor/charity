@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
@@ -23,6 +24,7 @@ defineOptions({
   name: 'MapView',
 })
 
+const router = useRouter()
 const mapContainer = ref<HTMLElement | null>(null)
 let map: maplibregl.Map | null = null
 
@@ -36,7 +38,7 @@ const charityColors: Record<string, string> = {
 }
 
 // Charity locations across different continents
-const charityLocations = [
+const charityLocations: { name: string; coordinates: [number, number]; type: string }[] = [
   // Africa
   { name: 'Clean Water Initiative', coordinates: [14.716677, 13.453812], type: 'water' }, // Chad
   { name: 'Rural Education Center', coordinates: [9.082, 7.491], type: 'education' }, // Nigeria
@@ -66,65 +68,74 @@ const charityLocations = [
   { name: 'Youth Support Program', coordinates: [14.5, 35.9], type: 'orphan' }, // Malta
 ]
 
+// Build popup content as DOM nodes so the buttons can get real click handlers
+const createPopupContent = (location: (typeof charityLocations)[number], color: string) => {
+  const root = document.createElement('div')
+  root.className = 'popup-content'
+
+  const title = document.createElement('h3')
+  title.textContent = location.name
+
+  const type = document.createElement('div')
+  type.className = 'popup-type'
+  type.style.backgroundColor = color
+  type.style.color = 'white'
+  type.textContent = location.type
+
+  const description = document.createElement('p')
+  description.className = 'popup-description'
+  description.textContent = `Supporting communities through ${location.type}-focused initiatives.`
+
+  const actions = document.createElement('div')
+  actions.className = 'popup-actions'
+
+  const learnMore = document.createElement('button')
+  learnMore.className = 'learn-more-btn'
+  learnMore.textContent = 'Learn More'
+  learnMore.addEventListener('click', () => router.push({ name: 'news' }))
+
+  const donate = document.createElement('button')
+  donate.className = 'donate-btn'
+  donate.textContent = 'Donate'
+  donate.addEventListener('click', () => router.push({ name: 'home', hash: '#donation' }))
+
+  actions.append(learnMore, donate)
+  root.append(title, type, description, actions)
+  return root
+}
+
 onMounted(() => {
-  if (mapContainer.value) {
-    // Initialize the map with MapLibre demo style
-    map = new maplibregl.Map({
-      container: mapContainer.value,
-      style: 'https://tiles.openfreemap.org/styles/liberty',
-      center: [20, 15], // Center on Africa
-      zoom: 2,
+  if (!mapContainer.value) return
+
+  const instance = new maplibregl.Map({
+    container: mapContainer.value,
+    style: 'https://tiles.openfreemap.org/styles/liberty',
+    center: [20, 15], // Center on Africa
+    zoom: 2,
+    attributionControl: { compact: true },
+  })
+  map = instance
+
+  instance.addControl(new maplibregl.NavigationControl({ showCompass: true, showZoom: true }))
+
+  instance.on('load', () => {
+    charityLocations.forEach((location) => {
+      const color = charityColors[location.type] || '#3498db'
+
+      const popup = new maplibregl.Popup({
+        offset: [0, 7],
+        closeButton: true,
+        closeOnClick: true,
+        maxWidth: '300px',
+        className: 'charity-popup',
+      }).setDOMContent(createPopupContent(location, color))
+
+      new maplibregl.Marker({ color })
+        .setLngLat(location.coordinates)
+        .setPopup(popup)
+        .addTo(instance)
     })
-
-    // Add navigation controls
-    if (map) {
-      map.addControl(new maplibregl.NavigationControl({ showCompass: true, showZoom: true }))
-      // Add attribution control if not present in the style
-      if (!map.hasControl(new maplibregl.AttributionControl())) {
-        map.addControl(new maplibregl.AttributionControl({ compact: true }))
-      }
-
-      // Add markers for charity locations when map is loaded
-      map.on('load', () => {
-        // Add markers for charity locations
-        charityLocations.forEach((location) => {
-          // Get color from charityColors object
-          const color = charityColors[location.type] || '#3498db'
-
-          // Add marker to map using default MapLibre markers with custom color
-          if (map) {
-            // Create popup with content
-            const popup = new maplibregl.Popup({
-              offset: [0, 7],
-              closeButton: true,
-              closeOnClick: true,
-              maxWidth: '300px',
-              className: 'charity-popup',
-            }).setHTML(`
-              <div class="popup-content">
-                <h3>${location.name}</h3>
-                <div class="popup-type" style="background-color: ${color}; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block;">${location.type}</div>
-                <p class="popup-description">Supporting communities through ${location.type}-focused initiatives.</p>
-                <div class="popup-actions">
-                  <button class="learn-more-btn">Learn More</button>
-                  <button class="donate-btn">Donate</button>
-                </div>
-              </div>
-            `)
-
-            // Create marker with popup
-            new maplibregl.Marker({
-              color: color,
-              scale: 1.0,
-            })
-              .setLngLat(location.coordinates as [number, number])
-              .setPopup(popup)
-              .addTo(map)
-          }
-        })
-      })
-    }
-  }
+  })
 })
 
 onUnmounted(() => {

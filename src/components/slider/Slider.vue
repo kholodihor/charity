@@ -1,49 +1,45 @@
 <template>
-  <div class="slider">
+  <div class="slider" ref="root">
     <slot :currentSlide="currentSlide" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 
 // Define component name for Vue devtools
 defineOptions({
-  name: 'SliderComponent'
-});
+  name: 'SliderComponent',
+})
 
-const currentSlide = ref(1);
-const getSlideCount = ref(0);
-const autoPlayEnabled = ref(true);
-const timeoutDuration = ref(5000);
+const props = withDefaults(defineProps<{ autoPlay?: boolean; interval?: number }>(), {
+  autoPlay: true,
+  interval: 5000,
+})
 
+const root = ref<HTMLElement | null>(null)
+const currentSlide = ref(1)
+const slideCount = ref(0)
+let timer: ReturnType<typeof setInterval> | undefined
 
 const nextSlide = () => {
-  if (currentSlide.value === getSlideCount.value) {
-    currentSlide.value = 1;
-
-    return;
-  }
-  currentSlide.value += 1;
-};
-
-const autoPlay = () => {
-  setInterval(() => {
-    nextSlide();
-  }, timeoutDuration.value);
-};
-if (autoPlayEnabled.value) {
-  autoPlay();
+  currentSlide.value = currentSlide.value >= slideCount.value ? 1 : currentSlide.value + 1
 }
 
 onMounted(() => {
-  getSlideCount.value = document.querySelectorAll('.slide').length;
-});
+  slideCount.value = root.value?.querySelectorAll('.slide').length ?? 0
+  if (props.autoPlay) {
+    timer = setInterval(nextSlide, props.interval)
+  }
+})
+
+onUnmounted(() => {
+  clearInterval(timer)
+})
 
 // Expose refs and methods for testing and external access
 defineExpose({
   currentSlide,
-  nextSlide
-});
+  nextSlide,
+})
 </script>
-

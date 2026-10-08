@@ -6,25 +6,13 @@
     </div>
     <div class="causes-cards">
       <Card
-        :title="cards[0].title"
-        :subtitle="cards[0].subtitle"
-        :image="cards[0].image"
-        :raised="waterRaised"
-        :goal="cards[0].goal"
-      />
-      <Card
-        :title="cards[1].title"
-        :subtitle="cards[1].subtitle"
-        :image="cards[1].image"
-        :raised="educationRaised"
-        :goal="cards[1].goal"
-      />
-      <Card
-        :title="cards[2].title"
-        :subtitle="cards[2].subtitle"
-        :image="cards[2].image"
-        :raised="medicineRaised"
-        :goal="cards[2].goal"
+        v-for="card in cards"
+        :key="card.image"
+        :title="card.title"
+        :subtitle="card.subtitle"
+        :image="card.image"
+        :raised="raisedByGoal[card.subtitle.toLowerCase()] ?? 0"
+        :goal="card.goal"
       />
     </div>
   </div>
@@ -35,51 +23,29 @@ import { ref, onMounted } from 'vue'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/firebase/firebaseInit'
 import { useRefsStore } from '@/stores/refs.store'
-import { type IDonation } from '@/interfaces/interfaces'
 import Card from './Card.vue'
 
-const waterRaised = ref(0)
-const educationRaised = ref(0)
-const medicineRaised = ref(0)
-const allDonations = ref<IDonation[]>([])
-const colRef = collection(db, 'donations')
 const cards = useRefsStore().cards
+// Total donated per goal ("water", "education", "medicine"), matched by card subtitle
+const raisedByGoal = ref<Record<string, number>>({})
 
 onMounted(async () => {
-  const querySnapshot = await getDocs(colRef)
-  const donations: IDonation[] = []
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  querySnapshot.forEach((doc: any) => {
-    const donation = {
-      id: doc.id,
-      sum: doc.data().sum,
-      name: doc.data().name,
-      goal: doc.data().goal,
-    }
-    donations.push(donation)
-  })
-  allDonations.value = donations
-  getSum(waterRaised, 'water')
-  getSum(educationRaised, 'education')
-  getSum(medicineRaised, 'medicine')
-})
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getSum = (reference: any, category: string) => {
-  const sums: number[] = []
-  allDonations.value
-    .filter((card: IDonation) => {
-      return card.goal === category
+  try {
+    const querySnapshot = await getDocs(collection(db, 'donations'))
+    const totals: Record<string, number> = {}
+    querySnapshot.forEach((doc) => {
+      const { goal, sum } = doc.data()
+      const amount = Number(sum)
+      // Skip malformed records so one bad entry doesn't turn the total into NaN
+      if (typeof goal === 'string' && Number.isFinite(amount) && amount > 0) {
+        totals[goal] = (totals[goal] ?? 0) + amount
+      }
     })
-    .forEach((card) => {
-      sums.push(Number(card.sum))
-    })
-  function sumArrayNumbers(arr: number[]) {
-    return arr.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0)
+    raisedByGoal.value = totals
+  } catch (error) {
+    console.error('Error loading donations:', error)
   }
-  const result = sumArrayNumbers(sums)
-  reference.value = result
-}
+})
 </script>
 
 <style scoped lang="scss">

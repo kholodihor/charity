@@ -24,7 +24,6 @@ export interface ICards {
   subtitle: string;
   goal: number;
   raised: number;
-  togo: number;
   image: string;
 }
 

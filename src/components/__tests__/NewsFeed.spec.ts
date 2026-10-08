@@ -9,6 +9,12 @@ import axios from 'axios'
 // Mock axios
 vi.mock('axios')
 
+vi.mock('@/utils/swal', () => ({
+  default: { fire: vi.fn() },
+}))
+
+import swal from '@/utils/swal'
+
 describe('NewsFeed Component', () => {
   beforeEach(() => {
     // Create a fresh pinia instance for each test
@@ -40,8 +46,9 @@ describe('NewsFeed Component', () => {
       }
     ]
 
-    // Reset axios mocks
+    // Reset mocks
     vi.mocked(axios.post).mockReset()
+    vi.mocked(swal.fire).mockClear()
   })
 
   it('renders correctly with title and subtitle', () => {
@@ -106,29 +113,20 @@ describe('NewsFeed Component', () => {
   it('validates form inputs and shows error when invalid', async () => {
     const wrapper = mount(NewsFeed)
     
-    // Mock window.alert
-    const alertMock = vi.fn()
-    window.alert = alertMock
-    
     // Submit form without filling inputs
     await wrapper.find('form').trigger('submit')
     
+    await flushPromises()
+
     // Should show validation error
-    expect(alertMock).toHaveBeenCalledWith('Validation failed')
+    expect(swal.fire).toHaveBeenCalledWith(expect.objectContaining({ title: 'Validation failed' }))
   })
 
   it('submits form successfully when inputs are valid', async () => {
-    // Setup fake timers
-    vi.useFakeTimers()
-    
     // Mock successful axios post
     vi.mocked(axios.post).mockResolvedValueOnce({})
     
     const wrapper = mount(NewsFeed)
-    
-    // Mock window.alert
-    const alertMock = vi.fn()
-    window.alert = alertMock
     
     // Fill form inputs
     await wrapper.find('input[placeholder="Enter full Name"]').setValue('Test User')
@@ -150,31 +148,21 @@ describe('NewsFeed Component', () => {
     )
     
     // Should show success message
-    expect(alertMock).toHaveBeenCalledWith('You subscribed successfully')
+    expect(swal.fire).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'You subscribed successfully' }),
+    )
     
-    // Wait for the timeout to clear form
-    vi.advanceTimersByTime(2000)
-    
-    // Need to force Vue to update the DOM after the state changes
-    await flushPromises()
     await nextTick()
-    
+
     // Form should be cleared
     const nameInput = wrapper.find('input[placeholder="Enter full Name"]').element as HTMLInputElement
     const emailInput = wrapper.find('input[placeholder="Enter your Email"]').element as HTMLInputElement
     expect(nameInput.value).toBe('')
     expect(emailInput.value).toBe('')
-    
-    // Restore real timers
-    vi.useRealTimers()
   })
 
   it('validates email format', async () => {
     const wrapper = mount(NewsFeed)
-    
-    // Mock window.alert
-    const alertMock = vi.fn()
-    window.alert = alertMock
     
     // Fill form with invalid email
     await wrapper.find('input[placeholder="Enter full Name"]').setValue('Test User')
@@ -183,8 +171,10 @@ describe('NewsFeed Component', () => {
     // Submit form
     await wrapper.find('form').trigger('submit')
     
+    await flushPromises()
+
     // Should show validation error
-    expect(alertMock).toHaveBeenCalledWith('Validation failed')
+    expect(swal.fire).toHaveBeenCalledWith(expect.objectContaining({ title: 'Validation failed' }))
     
     // Axios post should not be called
     expect(axios.post).not.toHaveBeenCalled()

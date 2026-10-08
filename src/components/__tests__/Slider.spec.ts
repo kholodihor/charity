@@ -1,12 +1,16 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { h } from 'vue'
 import Slider from '../slider/Slider.vue'
-import type { Ref } from 'vue'
 
-// Define the type for the exposed properties
+// Exposed refs are unwrapped on the component instance
 interface SliderExposed {
-  currentSlide: Ref<number>
+  currentSlide: number
   nextSlide: () => void
+}
+
+const threeSlides = {
+  slots: { default: () => [1, 2, 3].map(() => h('div', { class: 'slide' })) },
 }
 
 describe('Slider', () => {
@@ -18,14 +22,27 @@ describe('Slider', () => {
 
   it('starts with currentSlide set to 1', () => {
     const wrapper = mount(Slider)
-    // Access the exposed ref value
-    expect((wrapper.vm as unknown as SliderExposed).currentSlide.value).toBe(1)
+    expect((wrapper.vm as unknown as SliderExposed).currentSlide).toBe(1)
   })
 
-  it('sets up auto-play interval', () => {
+  it('wraps around after the last slide', async () => {
+    const wrapper = mount(Slider, threeSlides)
+    const vm = wrapper.vm as unknown as SliderExposed
+    vm.nextSlide()
+    vm.nextSlide()
+    expect(vm.currentSlide).toBe(3)
+    vm.nextSlide()
+    expect(vm.currentSlide).toBe(1)
+  })
+
+  it('sets up auto-play interval and clears it on unmount', () => {
     const setIntervalSpy = vi.spyOn(global, 'setInterval')
-    mount(Slider)
+    const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
+    const wrapper = mount(Slider)
     expect(setIntervalSpy).toHaveBeenCalled()
+    wrapper.unmount()
+    expect(clearIntervalSpy).toHaveBeenCalled()
     setIntervalSpy.mockRestore()
+    clearIntervalSpy.mockRestore()
   })
 })

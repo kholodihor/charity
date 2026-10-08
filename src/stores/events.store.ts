@@ -7,11 +7,10 @@ import {
   addDoc, 
   deleteDoc, 
   doc, 
-  updateDoc, 
   query, 
   orderBy, 
   Timestamp,
-  getDoc
+  runTransaction
 } from 'firebase/firestore';
 
 // Extended IEvent interface to include bookedBy field for user IDs
@@ -131,33 +130,34 @@ export const useEventStore = defineStore('events', {
         }
         
         const eventRef = doc(db, 'events', id);
-        const eventDoc = await getDoc(eventRef);
-        
-        if (!eventDoc.exists()) {
+
+        // Read and write in one transaction so two users can't book the same event at once
+        const result = await runTransaction(db, async (transaction) => {
+          const eventDoc = await transaction.get(eventRef);
+          if (!eventDoc.exists()) return 'not-found';
+
+          const bookedBy = eventDoc.data().bookedBy ?? null;
+          if (bookedBy !== null && bookedBy !== currentUser.uid) return 'taken';
+
+          const newBookedBy = bookedBy === null ? currentUser.uid : null;
+          transaction.update(eventRef, { bookedBy: newBookedBy });
+          return newBookedBy;
+        });
+
+        if (result === 'not-found') {
           this.error = 'Event not found';
           return;
         }
-        
-        const eventData = eventDoc.data();
-        const isBooked = eventData.bookedBy !== null && eventData.bookedBy !== undefined;
-        const isBookedByCurrentUser = eventData.bookedBy === currentUser.uid;
-        
-        // If event is not booked or is booked by current user, toggle booking status
-        if (!isBooked || isBookedByCurrentUser) {
-          const newBookedBy = isBooked ? null : currentUser.uid;
-          
-          await updateDoc(eventRef, {
-            bookedBy: newBookedBy
-          });
-          
-          // Update local state
-          const event = this.events.find((event) => event.id === id);
-          if (event) {
-            event.booked = !isBooked;
-            event.bookedBy = newBookedBy;
-          }
-        } else {
+        if (result === 'taken') {
           this.error = 'This event is already booked by another user';
+          return;
+        }
+
+        // Update local state
+        const event = this.events.find((event) => event.id === id);
+        if (event) {
+          event.booked = result !== null;
+          event.bookedBy = result;
         }
       } catch (error) {
         console.error('Error updating event:', error);
@@ -176,5 +176,8 @@ export const useEventStore = defineStore('events', {
       return event ? event.bookedBy === currentUser.uid : false;
     }
   },
-  persist: true,
+  // Cache only the event list; loading/error flags must not survive a reload
+  persist: {
+    pick: ['events'],
+  },
 });

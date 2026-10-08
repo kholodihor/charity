@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted, watch } from 'vue'
 import { useRefsStore } from '../stores/refs.store'
 import Slider from '@/components/slider/Slider.vue'
 import Slide from '@/components/slider/Slide.vue'
@@ -24,7 +24,7 @@ let lastScrollPosition = 0
 const toggleBodyScroll = (disable: boolean) => {
   if (disable) {
     // Save current scroll position
-    lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop
+    lastScrollPosition = window.scrollY
     // Apply styles to disable scrolling
     document.body.style.position = 'fixed'
     document.body.style.top = `-${lastScrollPosition}px`
@@ -46,17 +46,23 @@ watch(showMenu, (newValue) => {
   toggleBodyScroll(newValue)
 })
 
+// Close the menu first (restores page scroll), then scroll to the donation form
+const goToDonation = async () => {
+  showMenu.value = false
+  await nextTick()
+  document.getElementById('donation')?.scrollIntoView({ behavior: 'smooth' })
+}
+
 onMounted(() => {
-  if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', hideIcon)
-    return () => {
-      window.removeEventListener('scroll', hideIcon)
-    }
-  }
+  window.addEventListener('scroll', hideIcon, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', hideIcon)
 })
 
 const hideIcon = () => {
-  const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop
+  const currentScrollPosition = window.scrollY
   if (currentScrollPosition < 0) {
     return
   }
@@ -70,7 +76,7 @@ const hideIcon = () => {
 <template>
   <div class="home-container">
     <!-- Navigation Component -->
-    <NavBar class="side-nav" :class="{ show: showMenu }" />
+    <NavBar class="side-nav" :class="{ show: showMenu }" @donate="goToDonation" />
 
     <!-- Hero Section with Slider -->
     <section class="hero-section">
@@ -93,14 +99,20 @@ const hideIcon = () => {
         </Slider>
 
         <!-- Navigation Toggle Button -->
-        <div v-show="showIcon" id="nav-icon" @click="showMenu = !showMenu">
-          <i v-if="!showMenu" class="fas fa-bars"></i>
-          <i v-if="showMenu" class="fas fa-times"></i>
-        </div>
+        <button
+          v-show="showIcon"
+          id="nav-icon"
+          type="button"
+          :aria-label="showMenu ? 'Close menu' : 'Open menu'"
+          :aria-expanded="showMenu"
+          @click="showMenu = !showMenu"
+        >
+          <i :class="showMenu ? 'fas fa-times' : 'fas fa-bars'"></i>
+        </button>
       </div>
     </section>
     <Header class="main-header" />
-    <Donation />
+    <Donation id="donation" />
     <AboutUs />
     <LatestCauses />
     <JoinUs />
@@ -326,6 +338,9 @@ const hideIcon = () => {
 }
 
 #nav-icon {
+  background: none;
+  border: none;
+  padding: 0;
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;

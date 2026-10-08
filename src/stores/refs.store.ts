@@ -26,7 +26,6 @@ export const useRefsStore = defineStore('refs', {
         subtitle: 'Water',
         goal: 45000,
         raised: 35000,
-        togo: 10000,
         image: 'card1',
       },
       {
@@ -35,7 +34,6 @@ export const useRefsStore = defineStore('refs', {
         subtitle: 'Education',
         goal: 45000,
         raised: 41000,
-        togo: 7000,
         image: 'card2',
       },
       {
@@ -44,7 +42,6 @@ export const useRefsStore = defineStore('refs', {
         subtitle: 'Medicine',
         goal: 45000,
         raised: 27000,
-        togo: 16000,
         image: 'card3',
       },
     ],

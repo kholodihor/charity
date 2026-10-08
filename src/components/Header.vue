@@ -12,42 +12,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth'
+import { ref, onUnmounted } from 'vue'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/firebase/firebaseInit'
+import { signInWithGoogle as googleSignIn } from '@/firebase/auth'
 
 // Define component name for Vue devtools
 defineOptions({
   name: 'SiteHeader',
 })
 
-const router = useRouter()
-const userName = ref()
+const userName = ref<string | null>(null)
 const isLoggedIn = ref(false)
 
-onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      isLoggedIn.value = true
-      userName.value = user.displayName
-    } else {
-      isLoggedIn.value = false
-    }
-  })
+const unsubscribe = onAuthStateChanged(auth, (user) => {
+  isLoggedIn.value = !!user
+  userName.value = user?.displayName ?? null
 })
+onUnmounted(unsubscribe)
 
 const signInWithGoogle = () => {
-  const provider = new GoogleAuthProvider()
-  signInWithPopup(auth, provider)
-    .then((res) => {
-      console.log(res.user)
-      localStorage.setItem('user', res.user.displayName as string)
-      router.push('/')
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  googleSignIn().catch((err) => {
+    console.error('Google sign-in failed:', err)
+  })
 }
 
 const handleSignOut = () => {

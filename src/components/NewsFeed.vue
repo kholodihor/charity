@@ -8,7 +8,7 @@
     <div class="insights-cards">
       <div class="card" v-for="(card, index) in news" :key="index">
         <div class="image">
-          <img :src="`/img/${card.image}.webp`" />
+          <img :src="`/img/${card.image}.webp`" :alt="card.title" />
         </div>
         <div class="card-content">
           <span>{{ card.subtitle }}</span>
@@ -30,7 +30,7 @@
             <span>Newsletter</span>
             <h4>Get weekly Newsletter</h4>
           </div>
-          <form action="" method="POST" @submit.prevent="onSubscribe">
+          <form novalidate @submit.prevent="onSubscribe">
             <input
               type="text"
               placeholder="Enter full Name"
@@ -38,12 +38,12 @@
               aria-label="Your Name"
             />
             <input
-              type="text"
+              type="email"
               placeholder="Enter your Email"
               v-model.trim="state.email"
               aria-label="Your Email"
             />
-            <button type="submit">Subscribe Now</button>
+            <button type="submit" :disabled="submitting">Subscribe Now</button>
           </form>
         </div>
       </div>
@@ -52,9 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import axios from 'axios'
 import { useRefsStore } from '../stores/refs.store'
+import swal from '@/utils/swal'
 import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 
@@ -65,32 +66,39 @@ const state = reactive({
   email: '',
 })
 
-const rules = computed(() => {
-  return {
-    name: { required },
-    email: { required, email },
-  }
-})
+const rules = {
+  name: { required },
+  email: { required, email },
+}
 
 const v$ = useVuelidate(rules, state)
+const submitting = ref(false)
 
-const onSubscribe = () => {
-  v$.value.$validate()
-  if (!v$.value.$error) {
-    axios
-      .post(`https://charity-6b405-default-rtdb.firebaseio.com/subscribe.json`, {
-        name: state.name,
-        email: state.email,
-      })
-      .then(() => {
-        alert('You subscribed successfully')
-      })
-    setTimeout(() => {
-      state.name = ''
-      state.email = ''
-    }, 2000)
-  } else {
-    alert('Validation failed')
+const onSubscribe = async () => {
+  if (!(await v$.value.$validate())) {
+    swal.fire({
+      title: 'Validation failed',
+      text: 'Please enter your name and a valid email.',
+      icon: 'warning',
+    })
+    return
+  }
+
+  submitting.value = true
+  try {
+    await axios.post(`https://charity-6b405-default-rtdb.firebaseio.com/subscribe.json`, {
+      name: state.name,
+      email: state.email,
+    })
+    swal.fire({ title: 'You subscribed successfully', icon: 'success' })
+    state.name = ''
+    state.email = ''
+    v$.value.$reset()
+  } catch (error) {
+    console.error('Subscription failed:', error)
+    swal.fire({ title: 'Subscription failed', text: 'Please try again later.', icon: 'error' })
+  } finally {
+    submitting.value = false
   }
 }
 </script>

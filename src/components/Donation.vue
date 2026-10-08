@@ -1,37 +1,42 @@
 <template>
-  <div class="donation-box" id="donation">
+  <div class="donation-box">
     <div class="donation-box-text">
       <span>Make Donation</span>
       <h1>Become a Donar</h1>
     </div>
     <div class="donation-box-form">
-      <form>
-        <input 
-          type="text" 
-          placeholder="your name" 
-          v-model.trim="state.name" 
+      <form class="donation-form" novalidate @submit.prevent="addDonation">
+        <input
+          type="text"
+          placeholder="your name"
+          v-model.trim="state.name"
+          :class="{ error: v$.name.$error }"
         />
         <div v-if="v$.name.$error" class="error-message">Name is required</div>
-        <input 
-          type="text" 
-          placeholder="sum of donation" 
-          v-model.trim="state.sum" 
-          data-test="sum" 
+        <input
+          type="text"
+          inputmode="decimal"
+          placeholder="sum of donation"
+          v-model.trim="state.sum"
+          :class="{ error: v$.sum.$error }"
+          data-test="sum"
         />
-        <div v-if="v$.sum.$error" class="error-message">Sum is required</div>
+        <div v-if="v$.sum.$error" class="error-message">
+          {{ v$.sum.required.$invalid ? 'Sum is required' : 'Please enter a valid number' }}
+        </div>
         <div>
-          <button @click.prevent="sumFifty" data-test="fifty">$50</button>
-          <button @click.prevent="sumHundred">$100</button>
-          <select name="goal" id="" v-model="state.goal">
-            <option value="" disabled selected hidden>
-              Please choose the goal for your donation
-            </option>
+          <button type="button" class="preset-btn" @click="state.sum = '50'" data-test="fifty">
+            $50
+          </button>
+          <button type="button" class="preset-btn" @click="state.sum = '100'">$100</button>
+          <select name="goal" v-model="state.goal" :class="{ error: v$.goal.$error }">
+            <option value="" disabled hidden>Please choose the goal for your donation</option>
             <option value="water">Water</option>
             <option value="medicine">Medicine</option>
             <option value="education">Education</option>
           </select>
           <div v-if="v$.goal.$error" class="error-message">Please select a goal</div>
-          <button @click.prevent="addDonation()" class="submit">Make a donation</button>
+          <button type="submit" class="submit" :disabled="submitting">Make a donation</button>
         </div>
       </form>
     </div>
@@ -39,32 +44,34 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, onMounted } from 'vue'
 import Swal from '@/utils/swal'
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '@/firebase/firebaseInit'
 import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, helpers } from '@vuelidate/validators'
 
 const colRef = collection(db, 'donations')
-const router = useRouter()
 
 const state = reactive({
   name: '',
   sum: '',
-  goal: ''
+  goal: '',
 })
 
-const rules = computed(() => {
-  return {
-    name: { required },
-    sum: { required },
-    goal: { required }
-  }
-})
+const positiveNumber = helpers.withMessage(
+  'Please enter a valid number',
+  (value: string) => !helpers.req(value) || (Number.isFinite(Number(value)) && Number(value) > 0),
+)
+
+const rules = {
+  name: { required },
+  sum: { required, positiveNumber },
+  goal: { required },
+}
 
 const v$ = useVuelidate(rules, state)
+const submitting = ref(false)
 
 onMounted(() => {
   const user = localStorage.getItem('user')
@@ -74,33 +81,43 @@ onMounted(() => {
 })
 
 const addDonation = async () => {
-  v$.value.$validate()
-  if (!v$.value.$error) {
+  const isValid = await v$.value.$validate()
+  if (!isValid) {
+    Swal.fire({
+      title: 'Please check your inputs',
+      text: 'Please correct the highlighted fields.',
+      icon: 'warning',
+    })
+    return
+  }
+
+  submitting.value = true
+  try {
     await addDoc(colRef, {
       name: state.name,
       sum: state.sum,
       goal: state.goal,
-    }).then(() => {
-      Swal.fire({
-        title: 'Thank you for Your Donation',
-        icon: 'info',
-      })
+      timestamp: new Date(),
     })
-    router.push('/')
-  } else {
     Swal.fire({
-      title: 'Please, fill the fields',
-      icon: 'warning',
+      title: 'Thank you for Your Donation',
+      text: `${state.name}, your donation of $${state.sum} for ${state.goal} has been received.`,
+      icon: 'success',
     })
+    state.name = ''
+    state.sum = ''
+    state.goal = ''
+    v$.value.$reset()
+  } catch (error) {
+    console.error('Error adding donation:', error)
+    Swal.fire({
+      title: 'Error',
+      text: 'Something went wrong. Please try again later.',
+      icon: 'error',
+    })
+  } finally {
+    submitting.value = false
   }
-}
-
-const sumFifty = () => {
-  state.sum = '50'
-}
-
-const sumHundred = () => {
-  state.sum = '100'
 }
 </script>
 
@@ -109,6 +126,10 @@ const sumHundred = () => {
   color: #ff4d4f;
   font-size: 0.8rem;
   margin-left: 1rem;
+}
+input.error,
+select.error {
+  outline: 2px solid #ff4d4f;
 }
 .donation-box {
   display: flex;

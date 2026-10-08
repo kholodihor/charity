@@ -17,17 +17,14 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@sweetalert2/themes": "^5.0.27",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.9.0",
-    "chrome-remote-interface": "^0.33.3",
     "firebase": "^11.8.1",
     "maplibre-gl": "^5.6.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.3.0",
     "sweetalert2": "^11.22.0",
-    "uuid": "^11.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

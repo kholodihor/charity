@@ -39,7 +39,6 @@ describe('LatestCauses Component', () => {
         subtitle: 'Water',
         goal: 45000,
         raised: 0, // Will be updated by component
-        togo: 10000,
         image: 'card1'
       },
       {
@@ -47,7 +46,6 @@ describe('LatestCauses Component', () => {
         subtitle: 'Education',
         goal: 45000,
         raised: 0, // Will be updated by component
-        togo: 7000,
         image: 'card2'
       },
       {
@@ -55,7 +53,6 @@ describe('LatestCauses Component', () => {
         subtitle: 'Medicine',
         goal: 45000,
         raised: 0, // Will be updated by component
-        togo: 16000,
         image: 'card3'
       }
     ]

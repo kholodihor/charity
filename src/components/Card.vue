@@ -1,9 +1,9 @@
 <template>
   <div class="card" data-test="card">
     <div class="image">
-      <img :src="`/img/${props.image}.webp`" />
+      <img :src="`/img/${props.image}.webp`" :alt="props.subtitle" />
     </div>
-    <RangeSlider :myValue="props.raised / props.goal" />
+    <RangeSlider :myValue="props.goal > 0 ? props.raised / props.goal : 0" />
     <div class="card-content">
       <span>{{ props.subtitle }}</span>
       <h3>{{ props.title }}</h3>
@@ -16,7 +16,7 @@
         </div>
         <div class="footer-item">
           <i class="fas fa-exclamation"></i>To go
-          <span>${{ props.goal - props.raised }}</span>
+          <span>${{ Math.max(props.goal - props.raised, 0) }}</span>
         </div>
       </div>
     </div>
@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import RangeSlider from './RangeSlider.vue'
 
 const props = defineProps({

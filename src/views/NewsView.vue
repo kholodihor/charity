@@ -7,7 +7,7 @@
     <section class="water" v-for="(article, index) in articles" :key="index">
       <div class="image-box">
         <div class="image">
-          <img :src="`/img/${article.image}.webp`" />
+          <img :src="`/img/${article.image}.webp`" :alt="article.title" />
         </div>
       </div>
       <article class="article">
@@ -25,10 +25,10 @@
         <div class="mail"><i class="far fa-envelope"></i> &nbsp; email@.mail</div>
       </div>
       <div class="social">
-        <a href=""> <i class="fab fa-facebook-f"></i></a>
-        <a href=""> <i class="fab fa-twitter"></i></a>
-        <a href=""> <i class="fab fa-instagram"></i></a>
-        <a href=""> <i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Social link"> <i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Social link"> <i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Social link"> <i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Social link"> <i class="fab fa-youtube"></i></a>
       </div>
     </footer>
   </div>
